@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using CRUD_ChildrenCare.Models;
 
-namespace CRUD_ChildrenCare.Pages.ServicePages;
+namespace CRUD_ChildrenCare.Pages.SettingPages;
 
 public class DetailsModel : PageModel
 {
@@ -13,7 +13,7 @@ public class DetailsModel : PageModel
         _context = context;
     }
 
-    public Service Service { get; set; } = default!;
+    public Setting Setting { get; set; } = default!;
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
@@ -22,14 +22,14 @@ public class DetailsModel : PageModel
             return NotFound();
         }
 
-        var service = await _context.Service.FirstOrDefaultAsync(m => m.Id == id);
-        if (service is null)
+        var setting = await _context.Setting.FirstOrDefaultAsync(m => m.Id == id);
+        if (setting is null)
         {
             return NotFound();
         }
         else
         {
-            Service = service;
+            Setting = setting;
         }
 
         return Page();

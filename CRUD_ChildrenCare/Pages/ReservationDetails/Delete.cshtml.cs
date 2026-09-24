@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using CRUD_ChildrenCare.Models;
 
-namespace CRUD_ChildrenCare.Pages.ServicePages;
+namespace CRUD_ChildrenCare.Pages.ReservationDetailPages;
 
 public class DeleteModel : PageModel
 {
@@ -15,7 +15,7 @@ public class DeleteModel : PageModel
     }
 
     [BindProperty]
-    public Service Service { get; set; } = default!;
+    public ReservationDetail ReservationDetail { get; set; } = default!;
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
@@ -24,14 +24,14 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        var service = await _context.Service.FirstOrDefaultAsync(m => m.Id == id);
-        if (service is null)
+        var reservationdetail = await _context.ReservationDetail.FirstOrDefaultAsync(m => m.Id == id);
+        if (reservationdetail is null)
         {
             return NotFound();
         }
         else
         {
-            Service = service;
+            ReservationDetail = reservationdetail;
         }
 
         return Page();
@@ -44,11 +44,11 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        var service = await _context.Service.FindAsync(id);
-        if (service != null)
+        var reservationdetail = await _context.ReservationDetail.FindAsync(id);
+        if (reservationdetail != null)
         {
-            Service = service;
-            _context.Service.Remove(Service);
+            ReservationDetail = reservationdetail;
+            _context.ReservationDetail.Remove(ReservationDetail);
             await _context.SaveChangesAsync();
         }
 

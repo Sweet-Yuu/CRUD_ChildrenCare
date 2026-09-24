@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using CRUD_ChildrenCare.Models;
 
-namespace CRUD_ChildrenCare.Pages.ServicePages;
+namespace CRUD_ChildrenCare.Pages.SettingPages;
 
 public class CreateModel : PageModel
 {
@@ -20,7 +20,7 @@ public class CreateModel : PageModel
     }
 
     [BindProperty]
-    public Service Service { get; set; } = default!;
+    public Setting Setting { get; set; } = default!;
 
     // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD.
     public async Task<IActionResult> OnPostAsync()
@@ -30,7 +30,7 @@ public class CreateModel : PageModel
             return Page();
         }
 
-        _context.Service.Add(Service);
+        _context.Setting.Add(Setting);
         await _context.SaveChangesAsync();
 
         return RedirectToPage("./Index");

@@ -15,7 +15,7 @@ public class EditModel : PageModel
     }
 
     [BindProperty]
-    public CRUD_ChildrenCare.Models.Service Service { get; set; } = default!;
+    public Service Service { get; set; } = default!;
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {

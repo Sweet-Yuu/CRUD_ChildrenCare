@@ -11,6 +11,6 @@
         public string Author { get; set; } = string.Empty;
         public DateTime UpdatedDate { get; set; } = DateTime.Now;
         public bool IsFeatured { get; set; }
-        public bool Status { get; set; }
+        public bool Status { get; set; } = true;
     }
 }

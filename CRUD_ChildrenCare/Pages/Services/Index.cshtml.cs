@@ -14,7 +14,7 @@ public class IndexModel : PageModel
         _context = context;
     }
 
-    public IList<CRUD_ChildrenCare.Models.Service> Service { get; set; } = default!;
+    public IList<Service> Service { get; set; } = default!;
 
     public async Task OnGetAsync()
     {

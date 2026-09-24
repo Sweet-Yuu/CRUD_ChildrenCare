@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using CRUD_ChildrenCare.Models;
 
-namespace CRUD_ChildrenCare.Pages.PostPages;
+namespace CRUD_ChildrenCare.Pages.SettingPages;
 
 public class EditModel : PageModel
 {
@@ -15,7 +15,7 @@ public class EditModel : PageModel
     }
 
     [BindProperty]
-    public Post Post { get; set; } = default!;
+    public Setting Setting { get; set; } = default!;
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
@@ -24,12 +24,12 @@ public class EditModel : PageModel
             return NotFound();
         }
 
-        var post = await _context.Post.FirstOrDefaultAsync(m => m.Id == id);
-        if (post is null)
+        var setting = await _context.Setting.FirstOrDefaultAsync(m => m.Id == id);
+        if (setting is null)
         {
             return NotFound();
         }
-        Post = post;
+        Setting = setting;
         return Page();
     }
 
@@ -42,7 +42,7 @@ public class EditModel : PageModel
             return Page();
         }
 
-        _context.Attach(Post).State = EntityState.Modified;
+        _context.Attach(Setting).State = EntityState.Modified;
 
         try
         {
@@ -50,7 +50,7 @@ public class EditModel : PageModel
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!PostExists(Post.Id))
+            if (!SettingExists(Setting.Id))
             {
                 return NotFound();
             }
@@ -63,8 +63,8 @@ public class EditModel : PageModel
         return RedirectToPage("./Index");
     }
 
-    private bool PostExists(int id)
+    private bool SettingExists(int id)
     {
-        return _context.Post.Any(e => e.Id == id);
+        return _context.Setting.Any(e => e.Id == id);
     }
 }

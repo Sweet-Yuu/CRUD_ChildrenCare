@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using CRUD_ChildrenCare.Models;
 
-namespace CRUD_ChildrenCare.Pages.PostPages;
+namespace CRUD_ChildrenCare.Pages.ReservationDetailPages;
 
 public class IndexModel : PageModel
 {
@@ -14,10 +14,10 @@ public class IndexModel : PageModel
         _context = context;
     }
 
-    public IList<Post> Post { get; set; } = default!;
+    public IList<ReservationDetail> ReservationDetail { get; set; } = default!;
 
     public async Task OnGetAsync()
     {
-        Post = await _context.Post.ToListAsync();
+        ReservationDetail = await _context.ReservationDetail.ToListAsync();
     }
 }

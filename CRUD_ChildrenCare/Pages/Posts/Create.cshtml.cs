@@ -20,7 +20,7 @@ public class CreateModel : PageModel
     }
 
     [BindProperty]
-    public CRUD_ChildrenCare.Models.Post Post { get; set; } = default!;
+    public Post Post { get; set; } = default!;
 
     // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD.
     public async Task<IActionResult> OnPostAsync()

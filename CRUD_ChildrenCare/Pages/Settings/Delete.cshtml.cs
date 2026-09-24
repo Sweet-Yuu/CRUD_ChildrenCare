@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using CRUD_ChildrenCare.Models;
 
-namespace CRUD_ChildrenCare.Pages.ServicePages;
+namespace CRUD_ChildrenCare.Pages.SettingPages;
 
 public class DeleteModel : PageModel
 {
@@ -15,7 +15,7 @@ public class DeleteModel : PageModel
     }
 
     [BindProperty]
-    public Service Service { get; set; } = default!;
+    public Setting Setting { get; set; } = default!;
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
@@ -24,14 +24,14 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        var service = await _context.Service.FirstOrDefaultAsync(m => m.Id == id);
-        if (service is null)
+        var setting = await _context.Setting.FirstOrDefaultAsync(m => m.Id == id);
+        if (setting is null)
         {
             return NotFound();
         }
         else
         {
-            Service = service;
+            Setting = setting;
         }
 
         return Page();
@@ -44,11 +44,11 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        var service = await _context.Service.FindAsync(id);
-        if (service != null)
+        var setting = await _context.Setting.FindAsync(id);
+        if (setting != null)
         {
-            Service = service;
-            _context.Service.Remove(Service);
+            Setting = setting;
+            _context.Setting.Remove(Setting);
             await _context.SaveChangesAsync();
         }
 

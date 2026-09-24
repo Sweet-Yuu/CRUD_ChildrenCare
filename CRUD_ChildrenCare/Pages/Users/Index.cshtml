@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model CRUD_ChildrenCare.Pages.UserPages.IndexModel
 
 @{
@@ -18,6 +18,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.User[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].Password)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.User[0].Mobile)
@@ -45,6 +48,9 @@
             </td>
             <td>
                 @Html.DisplayFor(model => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Password)
             </td>
             <td>
                 @Html.DisplayFor(model => item.Mobile)

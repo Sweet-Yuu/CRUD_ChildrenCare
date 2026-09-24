@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -41,11 +41,11 @@
             transition: all 0.2s ease;
         }
 
-        .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #ffffff !important;
-            transform: translateY(-1px);
-        }
+            .nav-link:hover, .dropdown-item:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+                color: #ffffff !important;
+                transform: translateY(-1px);
+            }
 
         /* Container & Card Formatting */
         .main-card {
@@ -56,6 +56,7 @@
             padding: 2rem;
             margin-top: 1.5rem;
             margin-bottom: 2rem;
+            overflow: hidden;
         }
 
         /* Tables Customization */
@@ -63,27 +64,27 @@
             vertical-align: middle;
         }
 
-        .table thead th {
-            background-color: #f1f5f9;
-            color: #475569;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 0.5px;
-            border-bottom: none;
-            padding: 1rem;
-        }
+            .table thead th {
+                background-color: #f1f5f9;
+                color: #475569;
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.8rem;
+                letter-spacing: 0.5px;
+                border-bottom: none;
+                padding: 1rem;
+            }
 
-        .table tbody td {
-            padding: 1rem;
-            color: #334155;
-        }
+            .table tbody td {
+                padding: 1rem;
+                color: #334155;
+            }
 
         .table-hover tbody tr:hover {
             background-color: #f8fafc;
         }
 
-        /* Badges & Buttons */
+        /* Buttons & Badges */
         .btn-custom-primary {
             background-color: #0d6efd;
             border: none;
@@ -94,11 +95,11 @@
             transition: all 0.2s ease;
         }
 
-        .btn-custom-primary:hover {
-            background-color: #0b5ed7;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 15px rgba(13, 110, 253, 0.3);
-        }
+            .btn-custom-primary:hover {
+                background-color: #0b5ed7;
+                transform: translateY(-1px);
+                box-shadow: 0 6px 15px rgba(13, 110, 253, 0.3);
+            }
 
         footer {
             background-color: #ffffff;
@@ -123,24 +124,22 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto gap-1">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Index">
-                                <i class="fa-solid fa-house me-1"></i> Trang chủ
-                            </a>
+                            <a class="nav-link" asp-page="/Index"><i class="fa-solid fa-house me-1"></i> Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Users/Index">
-                                <i class="fa-solid fa-users-gear me-1"></i> Quản lý Users
-                            </a>
+                            <a class="nav-link" asp-page="/Users/Index"><i class="fa-solid fa-users me-1"></i> Users</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Services/Index">
-                                <i class="fa-solid fa-hand-holding-medical me-1"></i> Quản lý Services
-                            </a>
+                            <a class="nav-link" asp-page="/Services/Index"><i class="fa-solid fa-hand-holding-medical me-1"></i> Services</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Posts/Index">
-                                <i class="fa-solid fa-newspaper me-1"></i> Quản lý Posts
-                            </a>
+                            <a class="nav-link" asp-page="/Posts/Index"><i class="fa-solid fa-newspaper me-1"></i> Posts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-page="/Reservations/Index"><i class="fa-solid fa-calendar-check me-1"></i> Reservations</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-page="/Settings/Index"><i class="fa-solid fa-gears me-1"></i> Settings</a>
                         </li>
                     </ul>
                 </div>
@@ -156,7 +155,7 @@
 
     <footer class="mt-auto">
         <div class="container text-center">
-            <p class="mb-0">&copy; 2026 - <strong>ChildrenCare Management System</strong>. Designed for Healthcare Services.</p>
+            <p class="mb-0">&copy; 2026 - <strong>ChildrenCare Management System</strong>. All rights reserved.</p>
         </div>
     </footer>
 

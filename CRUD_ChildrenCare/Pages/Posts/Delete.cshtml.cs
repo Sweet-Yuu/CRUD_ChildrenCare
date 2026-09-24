@@ -15,7 +15,7 @@ public class DeleteModel : PageModel
     }
 
     [BindProperty]
-    public CRUD_ChildrenCare.Models.Post Post { get; set; } = default!;
+    public Post Post { get; set; } = default!;
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
