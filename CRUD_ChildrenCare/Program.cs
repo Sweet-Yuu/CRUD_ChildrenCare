@@ -1,8 +1,4 @@
-using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("CRUD_ChildrenCareContext") ?? throw new InvalidOperationException("Connection string 'CRUD_ChildrenCareContext' not found.");
-
-builder.Services.AddDbContext<CRUD_ChildrenCareContext>(options => options.UseSqlServer(connectionString));
 
 // Add services to the container.
 builder.Services.AddRazorPages();
