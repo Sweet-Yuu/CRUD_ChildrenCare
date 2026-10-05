@@ -1,6 +1,8 @@
 using CRUD_ChildrenCare.Data;
 using CRUD_ChildrenCare.Services.Email;
+using CRUD_ChildrenCare.Services.Files;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +17,7 @@ public sealed class TestWebApplicationFactory : WebApplicationFactory<Program>
     private readonly SqliteConnection connection = new("Data Source=:memory:");
 
     public RecordingEmailSender EmailSender { get; } = new();
+    public RecordingAvatarStorage AvatarStorage { get; } = new();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -27,6 +30,8 @@ public sealed class TestWebApplicationFactory : WebApplicationFactory<Program>
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connection));
             services.RemoveAll<IEmailSender>();
             services.AddSingleton<IEmailSender>(EmailSender);
+            services.RemoveAll<IAvatarStorage>();
+            services.AddSingleton<IAvatarStorage>(AvatarStorage);
         });
     }
 
@@ -61,6 +66,33 @@ public sealed class TestWebApplicationFactory : WebApplicationFactory<Program>
         public Task SendAsync(EmailMessage message, CancellationToken cancellationToken)
         {
             Messages.Add(message);
+            return Task.CompletedTask;
+        }
+    }
+
+    public sealed class RecordingAvatarStorage : IAvatarStorage
+    {
+        public const string NewAvatarPath = "/uploads/avatars/new.png";
+        public bool FailSave { get; set; }
+        public List<string> DeletedPaths { get; } = [];
+
+        public Task<string> SaveAsync(IFormFile file, CancellationToken cancellationToken)
+        {
+            if (FailSave)
+            {
+                throw new AvatarStorageException("The avatar is invalid.");
+            }
+
+            return Task.FromResult(NewAvatarPath);
+        }
+
+        public Task DeleteAsync(string? webPath, CancellationToken cancellationToken)
+        {
+            if (webPath is not null)
+            {
+                DeletedPaths.Add(webPath);
+            }
+
             return Task.CompletedTask;
         }
     }
