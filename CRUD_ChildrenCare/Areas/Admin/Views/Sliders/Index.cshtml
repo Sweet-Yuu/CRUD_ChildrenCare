@@ -1,0 +1,97 @@
+@using CRUD_ChildrenCare.Models.Enums
+@model CRUD_ChildrenCare.Areas.Admin.ViewModels.Sliders.SliderListViewModel
+@{ ViewData["Title"] = "Manage Sliders"; }
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Manage Sliders</h2>
+    <a asp-action="Create" class="btn btn-primary">Create New Slider</a>
+</div>
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <input type="text" name="search" class="form-control" placeholder="Search by title or link..." value="@Model.SearchQuery">
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select">
+                    <option value="">All Statuses</option>
+                    @foreach (var s in Enum.GetValues<SliderStatus>())
+                    {
+                        if (Model.Status == s.ToString()) { <option value="@s" selected>@s</option> }
+                        else { <option value="@s">@s</option> }
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="sort" class="form-select">
+                    <option value="">Sort by...</option>
+                    @foreach (var sort in new[] { "Title", "TitleDesc", "BackLink", "Status" })
+                    {
+                        if (Model.Sort == sort) { <option value="@sort" selected>@sort</option> }
+                        else { <option value="@sort">@sort</option> }
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-secondary w-100">Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="table-responsive bg-white rounded shadow-sm">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th>Image</th>
+                <th>Title</th>
+                <th>BackLink</th>
+                <th>Status</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var slider in Model.Sliders)
+            {
+                <tr>
+                    <td><img src="@slider.ImageUrl" height="50" style="object-fit:cover;" class="rounded" /></td>
+                    <td>@slider.Title</td>
+                    <td><a href="@slider.BackLink" target="_blank">@slider.BackLink</a></td>
+                    <td>
+                        @if (slider.Status == SliderStatus.Active) { <span class="badge bg-success">Active</span> }
+                        else { <span class="badge bg-secondary">Inactive</span> }
+                    </td>
+                    <td class="text-end">
+                        <a asp-action="Edit" asp-route-id="@slider.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <form asp-action="ToggleStatus" asp-route-id="@slider.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm @(slider.Status == SliderStatus.Active ? "btn-outline-danger" : "btn-outline-success")">
+                                @(slider.Status == SliderStatus.Active ? "Hide" : "Show")
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (Model.TotalPages > 1)
+{
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-search="@Model.SearchQuery" asp-route-status="@Model.Status" asp-route-sort="@Model.Sort" asp-route-page="@(Model.PageIndex - 1)">Previous</a>
+            </li>
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(Model.PageIndex == i ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-search="@Model.SearchQuery" asp-route-status="@Model.Status" asp-route-sort="@Model.Sort" asp-route-page="@i">@i</a>
+                </li>
+            }
+            <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-search="@Model.SearchQuery" asp-route-status="@Model.Status" asp-route-sort="@Model.Sort" asp-route-page="@(Model.PageIndex + 1)">Next</a>
+            </li>
+        </ul>
+    </nav>
+}

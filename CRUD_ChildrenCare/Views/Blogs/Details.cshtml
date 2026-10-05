@@ -1,0 +1,40 @@
+@model CRUD_ChildrenCare.Models.Post
+@{ ViewData["Title"] = Model.Title; }
+
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Blogs</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="mb-4">
+                <span class="badge bg-primary fs-6 mb-2">@Model.Category?.Name</span>
+                <h1 class="fw-bold mb-3">@Model.Title</h1>
+                <div class="d-flex align-items-center text-muted">
+                    <img src="@(Model.Author?.AvatarUrl ?? "/img/default-avatar.png")" alt="@Model.Author?.FullName" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                    <div>
+                        <div class="fw-bold">@Model.Author?.FullName</div>
+                        <small>Last updated: @Model.UpdatedDate.ToString("MMM dd, yyyy")</small>
+                    </div>
+                </div>
+            </div>
+
+            <img src="@Model.Thumbnail" class="img-fluid rounded mb-5 w-100" alt="@Model.Title" style="max-height: 500px; object-fit: cover;">
+
+            <div class="blog-content">
+                @Html.Raw(Model.Description)
+            </div>
+            
+            <hr class="my-5" />
+            
+            <div class="d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-outline-secondary">&larr; Back to Blogs</a>
+            </div>
+        </div>
+    </div>
+</div>

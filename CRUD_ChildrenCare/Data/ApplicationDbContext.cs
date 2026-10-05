@@ -8,6 +8,8 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
     public DbSet<User> Users => Set<User>();
     public DbSet<Setting> Settings => Set<Setting>();
     public DbSet<RoleMenu> RoleMenus => Set<RoleMenu>();
+    public DbSet<Post> Posts => Set<Post>();
+    public DbSet<Slider> Sliders => Set<Slider>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -54,12 +56,59 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
             .WithMany(item => item.RoleMenuEntries)
             .HasForeignKey(item => item.MenuId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        var post = modelBuilder.Entity<Post>();
+        post.Property(item => item.Title).HasMaxLength(200);
+        post.Property(item => item.Thumbnail).HasMaxLength(255);
+        post.Property(item => item.BriefInfo).HasMaxLength(500);
+        post.Property(item => item.Status).HasConversion<string>().HasMaxLength(20);
+        post.HasOne(item => item.Category)
+            .WithMany()
+            .HasForeignKey(item => item.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+        post.HasOne(item => item.Author)
+            .WithMany()
+            .HasForeignKey(item => item.AuthorId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        var slider = modelBuilder.Entity<Slider>();
+        slider.Property(item => item.Title).HasMaxLength(200);
+        slider.Property(item => item.ImageUrl).HasMaxLength(255);
+        slider.Property(item => item.BackLink).HasMaxLength(500);
+        slider.Property(item => item.Status).HasConversion<string>().HasMaxLength(20);
+        slider.Property(item => item.Notes).HasMaxLength(500);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var now = DateTime.UtcNow;
         foreach (var entry in ChangeTracker.Entries<User>())
+        {
+            if (entry.State == EntityState.Added)
+            {
+                entry.Entity.CreatedDate = now;
+            }
+
+            if (entry.State is EntityState.Added or EntityState.Modified)
+            {
+                entry.Entity.UpdatedDate = now;
+            }
+        }
+
+        foreach (var entry in ChangeTracker.Entries<Post>())
+        {
+            if (entry.State == EntityState.Added)
+            {
+                entry.Entity.CreatedDate = now;
+            }
+
+            if (entry.State is EntityState.Added or EntityState.Modified)
+            {
+                entry.Entity.UpdatedDate = now;
+            }
+        }
+
+        foreach (var entry in ChangeTracker.Entries<Slider>())
         {
             if (entry.State == EntityState.Added)
             {

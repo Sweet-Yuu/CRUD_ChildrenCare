@@ -1,13 +1,96 @@
+@model CRUD_ChildrenCare.ViewModels.Home.HomeViewModel
 @{ ViewData["Title"] = "Home"; }
-<section class="hero-panel overflow-hidden"><div class="row align-items-center g-5">
-    <div class="col-lg-7"><span class="eyebrow">Trusted care for growing families</span><h1 class="display-4 fw-bold mt-3">A healthier start for every child.</h1><p class="lead text-muted mt-3">Children Care brings families and care teams together with secure accounts, clear communication, and dependable support.</p><div class="d-flex flex-wrap gap-2 mt-4">
-        @if (User.Identity?.IsAuthenticated == true) { <a class="btn btn-primary btn-lg" asp-controller="Profile" asp-action="Index">View my profile</a> }
-        else { <a class="btn btn-primary btn-lg" asp-controller="Account" asp-action="Register">Create an account</a><a class="btn btn-outline-primary btn-lg" asp-controller="Account" asp-action="Login">Sign in</a> }
-    </div></div>
-    <div class="col-lg-5"><div class="care-card"><div class="care-icon" aria-hidden="true">+</div><h2 class="h4">Care that stays connected</h2><p class="mb-0 text-muted">Manage your account and personal details from one secure, responsive workspace.</p></div></div>
-</div></section>
-<section class="row g-4 py-5" aria-label="Children Care benefits">
-    <div class="col-md-4"><div class="feature-card"><span class="feature-number">01</span><h2 class="h5">Secure by design</h2><p class="text-muted mb-0">Protected sign-in, verified accounts, and role-based access keep personal information in the right hands.</p></div></div>
-    <div class="col-md-4"><div class="feature-card"><span class="feature-number">02</span><h2 class="h5">Simple to manage</h2><p class="text-muted mb-0">Update your profile and credentials through focused, easy-to-use forms.</p></div></div>
-    <div class="col-md-4"><div class="feature-card"><span class="feature-number">03</span><h2 class="h5">Ready to grow</h2><p class="text-muted mb-0">A dependable foundation for appointments, services, and child health content.</p></div></div>
+
+@if (Model.Sliders.Any())
+{
+    <div id="homeCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            @for (int i = 0; i < Model.Sliders.Count(); i++)
+            {
+                <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")" aria-label="Slide @(i + 1)"></button>
+            }
+        </div>
+        <div class="carousel-inner">
+            @foreach (var (slider, index) in Model.Sliders.Select((s, i) => (s, i)))
+            {
+                <div class="carousel-item @(index == 0 ? "active" : "")">
+                    <a href="@slider.BackLink">
+                        <img src="@slider.ImageUrl" class="d-block w-100" alt="@slider.Title" style="height: 400px; object-fit: cover;">
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
+                            <h5>@slider.Title</h5>
+                            @if (!string.IsNullOrEmpty(slider.Notes))
+                            {
+                                <p>@slider.Notes</p>
+                            }
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+}
+
+<section class="hero-panel overflow-hidden">
+    <div class="row align-items-center g-5">
+        <div class="col-lg-7">
+            <span class="eyebrow">Trusted care for growing families</span>
+            <h1 class="display-4 fw-bold mt-3">A healthier start for every child.</h1>
+            <p class="lead text-muted mt-3">Children Care brings families and care teams together with secure accounts, clear communication, and dependable support.</p>
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a class="btn btn-primary btn-lg" asp-controller="Profile" asp-action="Index">View my profile</a>
+                }
+                else
+                {
+                    <a class="btn btn-primary btn-lg" asp-controller="Account" asp-action="Register">Create an account</a>
+                    <a class="btn btn-outline-primary btn-lg" asp-controller="Account" asp-action="Login">Sign in</a>
+                }
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="care-card">
+                <div class="care-icon" aria-hidden="true">+</div>
+                <h2 class="h4">Care that stays connected</h2>
+                <p class="mb-0 text-muted">Manage your account and personal details from one secure, responsive workspace.</p>
+            </div>
+        </div>
+    </div>
 </section>
+
+@if (Model.FeaturedPosts.Any())
+{
+    <section class="mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h3 fw-bold">Featured News & Articles</h2>
+            <a asp-controller="Blogs" asp-action="Index" class="btn btn-outline-primary">View All Blogs</a>
+        </div>
+        <div class="row g-4">
+            @foreach (var post in Model.FeaturedPosts)
+            {
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <img src="@post.Thumbnail" class="card-img-top" alt="@post.Title" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <span class="badge bg-secondary mb-2">@post.Category?.Name</span>
+                            <h5 class="card-title">@post.Title</h5>
+                            <p class="card-text text-muted small">@post.BriefInfo</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
+                            <small class="text-muted">By @post.Author?.FullName</small>
+                            <a asp-controller="Blogs" asp-action="Details" asp-route-id="@post.Id" class="btn btn-sm btn-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+}

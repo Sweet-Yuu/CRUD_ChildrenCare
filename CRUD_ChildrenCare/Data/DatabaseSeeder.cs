@@ -22,6 +22,19 @@ public sealed class DatabaseSeeder(
         await SeedSettingsAsync(cancellationToken);
         await SeedRoleMenusAsync(cancellationToken);
         await SeedAdminAsync(cancellationToken);
+        // Auto-promote shinichi2542003@gmail.com and kkk@gmail.com
+        var emailsToPromote = new[] { "shinichi2542003@gmail.com", "kkk@gmail.com" };
+        foreach (var email in emailsToPromote)
+        {
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+            if (user != null)
+            {
+                var adminRoleId = await context.Settings.Where(s => s.Type == SettingType.UserRole && s.Value == SystemData.RoleValues.Admin).Select(s => s.Id).FirstOrDefaultAsync(cancellationToken);
+                user.RoleId = adminRoleId;
+                user.Status = UserStatus.Active; // Activate account so they don't have to verify email
+            }
+        }
+        await context.SaveChangesAsync(cancellationToken);
     }
 
     private async Task SeedSettingsAsync(CancellationToken cancellationToken)
