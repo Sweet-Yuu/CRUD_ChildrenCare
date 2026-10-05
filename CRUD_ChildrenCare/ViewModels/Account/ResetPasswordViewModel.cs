@@ -1,0 +1,26 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace CRUD_ChildrenCare.ViewModels.Account;
+
+public sealed class ResetPasswordViewModel
+{
+    [Required]
+    public int UserId { get; set; }
+
+    [Required]
+    public string Token { get; set; } = string.Empty;
+
+    [Required]
+    [DataType(DataType.Password)]
+    [RegularExpression(
+        @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,50}$",
+        ErrorMessage = "Password must be 8-50 characters and include uppercase, lowercase, and a number.")]
+    [Display(Name = "New password")]
+    public string NewPassword { get; set; } = string.Empty;
+
+    [Required]
+    [DataType(DataType.Password)]
+    [Compare(nameof(NewPassword), ErrorMessage = "Passwords do not match.")]
+    [Display(Name = "Confirm new password")]
+    public string ConfirmPassword { get; set; } = string.Empty;
+}

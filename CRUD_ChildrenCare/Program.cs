@@ -1,25 +1,102 @@
+using CRUD_ChildrenCare.Data;
+using CRUD_ChildrenCare.Models;
+using CRUD_ChildrenCare.Options;
+using CRUD_ChildrenCare.Security;
+using CRUD_ChildrenCare.Services.Accounts;
+using CRUD_ChildrenCare.Services.Email;
+using CRUD_ChildrenCare.Services.Files;
+using CRUD_ChildrenCare.Services.Menus;
+using CRUD_ChildrenCare.Services.Security;
+using CRUD_ChildrenCare.Services.Time;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Cookie.Name = "ChildrenCare.Auth";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+        options.SlidingExpiration = true;
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.EventsType = typeof(ApplicationCookieEvents);
+    });
+builder.Services.AddAuthorization();
+builder.Services.AddScoped<ApplicationCookieEvents>();
+builder.Services.AddSingleton<IClock, SystemClock>();
+builder.Services.AddSingleton<ISecureTokenService, SecureTokenService>();
+builder.Services.AddSingleton<IPasswordGenerator, PasswordGenerator>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddScoped<DatabaseSeeder>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IAdminMenuService, AdminMenuService>();
+builder.Services.AddOptions<AvatarOptions>()
+    .Bind(builder.Configuration.GetSection(AvatarOptions.SectionName))
+    .Validate(options => options.MaximumBytes > 0, "Avatar maximum size must be greater than zero.")
+    .ValidateOnStart();
+builder.Services.AddScoped<IAvatarStorage, LocalAvatarStorage>();
+
+var useSmtp = !builder.Environment.IsDevelopment()
+    || builder.Configuration.GetValue("Email:UseSmtp", false);
+if (!useSmtp)
+{
+    builder.Services.AddSingleton<IEmailSender, LoggingEmailSender>();
+}
+else
+{
+    builder.Services.AddOptions<SmtpOptions>()
+        .Bind(builder.Configuration.GetSection(SmtpOptions.SectionName))
+        .Validate(options => !string.IsNullOrWhiteSpace(options.Host), "SMTP host is required.")
+        .Validate(options => options.Port is > 0 and <= 65535, "SMTP port is invalid.")
+        .Validate(options => !string.IsNullOrWhiteSpace(options.FromEmail), "SMTP sender email is required.")
+        .ValidateOnStart();
+    builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
+}
 
 var app = builder.Build();
+
+if (app.Configuration.GetValue("Database:InitializeOnStartup", true))
+{
+    await using var scope = app.Services.CreateAsyncScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await dbContext.Database.MigrateAsync();
+    await scope.ServiceProvider.GetRequiredService<DatabaseSeeder>().SeedAsync(CancellationToken.None);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
+    app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseStatusCodePagesWithReExecute("/Home/NotFound", "?statusCode={0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapRazorPages();
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+public partial class Program;

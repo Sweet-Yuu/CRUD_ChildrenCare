@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Children Care</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="site-body">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light site-navbar">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center gap-2" href="/"><span class="brand-mark">+</span><span>Children Care</span></a>
+                <div class="ms-auto d-flex gap-2 align-items-center">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <span class="text-muted">@User.Identity.Name</span>
+                        <a class="btn btn-outline-primary btn-sm" asp-controller="Profile" asp-action="Index">My profile</a>
+                        <a class="btn btn-outline-secondary btn-sm" asp-controller="Account" asp-action="ChangePassword">Change password</a>
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            <button class="btn btn-outline-danger btn-sm" type="submit">Sign out</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a class="btn btn-outline-primary btn-sm" asp-controller="Account" asp-action="Login">Sign in</a>
+                        <a class="btn btn-primary btn-sm" asp-controller="Account" asp-action="Register">Create account</a>
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="container py-5 site-main">
+        @if (TempData["SuccessMessage"] is string successMessage)
+        {
+            <div class="alert alert-success" role="alert">@successMessage</div>
+        }
+        @RenderBody()
+    </main>
+    <footer class="site-footer"><div class="container d-flex flex-wrap justify-content-between gap-2"><span>Children Care</span><span>Secure care, connected families.</span></div></footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

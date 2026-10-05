@@ -1,0 +1,10 @@
+@model SettingFormViewModel
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<input asp-for="Id" type="hidden" />
+<div class="row">
+    <div class="col-md-6 mb-3"><label asp-for="Type" class="form-label"></label><select asp-for="Type" asp-items="Html.GetEnumSelectList<SettingType>()" class="form-select"></select><span asp-validation-for="Type" class="text-danger"></span></div>
+    <div class="col-md-6 mb-3"><label asp-for="Status" class="form-label"></label><select asp-for="Status" asp-items="Html.GetEnumSelectList<SettingStatus>()" class="form-select"></select><span asp-validation-for="Status" class="text-danger"></span></div>
+</div>
+<div class="mb-3"><label asp-for="Name" class="form-label"></label><input asp-for="Name" class="form-control" /><span asp-validation-for="Name" class="text-danger"></span></div>
+<div class="mb-3"><label asp-for="Value" class="form-label"></label><input asp-for="Value" class="form-control" readonly="@Model.IsSystemRole" /><span asp-validation-for="Value" class="text-danger"></span>@if (Model.IsSystemRole) { <div class="form-text">The value of a system role cannot be changed.</div> }</div>
+<div class="mb-3"><label asp-for="Description" class="form-label"></label><textarea asp-for="Description" class="form-control" rows="3"></textarea><span asp-validation-for="Description" class="text-danger"></span></div>

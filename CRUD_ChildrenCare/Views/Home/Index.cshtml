@@ -1,0 +1,13 @@
+@{ ViewData["Title"] = "Home"; }
+<section class="hero-panel overflow-hidden"><div class="row align-items-center g-5">
+    <div class="col-lg-7"><span class="eyebrow">Trusted care for growing families</span><h1 class="display-4 fw-bold mt-3">A healthier start for every child.</h1><p class="lead text-muted mt-3">Children Care brings families and care teams together with secure accounts, clear communication, and dependable support.</p><div class="d-flex flex-wrap gap-2 mt-4">
+        @if (User.Identity?.IsAuthenticated == true) { <a class="btn btn-primary btn-lg" asp-controller="Profile" asp-action="Index">View my profile</a> }
+        else { <a class="btn btn-primary btn-lg" asp-controller="Account" asp-action="Register">Create an account</a><a class="btn btn-outline-primary btn-lg" asp-controller="Account" asp-action="Login">Sign in</a> }
+    </div></div>
+    <div class="col-lg-5"><div class="care-card"><div class="care-icon" aria-hidden="true">+</div><h2 class="h4">Care that stays connected</h2><p class="mb-0 text-muted">Manage your account and personal details from one secure, responsive workspace.</p></div></div>
+</div></section>
+<section class="row g-4 py-5" aria-label="Children Care benefits">
+    <div class="col-md-4"><div class="feature-card"><span class="feature-number">01</span><h2 class="h5">Secure by design</h2><p class="text-muted mb-0">Protected sign-in, verified accounts, and role-based access keep personal information in the right hands.</p></div></div>
+    <div class="col-md-4"><div class="feature-card"><span class="feature-number">02</span><h2 class="h5">Simple to manage</h2><p class="text-muted mb-0">Update your profile and credentials through focused, easy-to-use forms.</p></div></div>
+    <div class="col-md-4"><div class="feature-card"><span class="feature-number">03</span><h2 class="h5">Ready to grow</h2><p class="text-muted mb-0">A dependable foundation for appointments, services, and child health content.</p></div></div>
+</section>

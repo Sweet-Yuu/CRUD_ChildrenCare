@@ -1,0 +1,9 @@
+@model AccountMessageViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+<div class="text-center py-5">
+    <h1>@Model.Title</h1>
+    <p class="@(Model.Succeeded ? "text-success" : "text-danger")">@Model.Message</p>
+    <a class="btn btn-primary" asp-action="Login">Go to sign in</a>
+</div>
