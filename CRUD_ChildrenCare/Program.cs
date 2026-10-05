@@ -33,6 +33,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<ApplicationCookieEvents>();
 builder.Services.AddSingleton<IClock, SystemClock>();
 builder.Services.AddSingleton<ISecureTokenService, SecureTokenService>();
+builder.Services.AddSingleton<IPasswordGenerator, PasswordGenerator>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<DatabaseSeeder>();
 builder.Services.AddScoped<IAccountService, AccountService>();

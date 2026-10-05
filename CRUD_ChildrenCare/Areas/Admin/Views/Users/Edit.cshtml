@@ -1,0 +1,9 @@
+@model EditUserViewModel
+@{ ViewData["Title"] = "Edit user"; }
+<div class="row justify-content-center"><div class="col-lg-7"><h1>Edit user</h1><p class="text-muted">Only role and account status can be changed by administrators.</p>
+<form asp-action="Edit" asp-route-id="@Model.Id" method="post" novalidate><div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div><input asp-for="Id" type="hidden" />
+    <div class="row"><div class="col-md-6 mb-3"><label class="form-label">Full name</label><input value="@Model.FullName" class="form-control" readonly /></div><div class="col-md-6 mb-3"><label class="form-label">Email</label><input value="@Model.Email" class="form-control" readonly /></div></div>
+    <div class="row"><div class="col-md-6 mb-3"><label asp-for="RoleId" class="form-label"></label><select asp-for="RoleId" class="form-select">@foreach (var role in Model.Roles) { <option value="@role.Id">@role.Name</option> }</select><span asp-validation-for="RoleId" class="text-danger"></span></div><div class="col-md-6 mb-3"><label asp-for="Status" class="form-label"></label><select asp-for="Status" asp-items="Html.GetEnumSelectList<UserStatus>()" class="form-select"></select><span asp-validation-for="Status" class="text-danger"></span></div></div>
+    <button class="btn btn-primary" type="submit">Save changes</button><a class="btn btn-link" asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
+</form></div></div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

@@ -1,0 +1,24 @@
+@model UsersIndexViewModel
+@{
+    ViewData["Title"] = "Users";
+    string NextDirection(string column) => Model.Sort.Equals(column, StringComparison.OrdinalIgnoreCase) && Model.Direction == "asc" ? "desc" : "asc";
+}
+<div class="d-flex justify-content-between align-items-center mb-4"><div><h1 class="mb-1">Users</h1><p class="text-muted mb-0">Manage Children Care user accounts.</p></div><a class="btn btn-primary" asp-action="Create">Create user</a></div>
+<form method="get" class="card card-body mb-4"><div class="row g-3 align-items-end">
+    <div class="col-lg-4"><label class="form-label" for="search">Search</label><input class="form-control" id="search" name="search" value="@Model.Search" placeholder="Name, email, or mobile" /></div>
+    <div class="col-md-2"><label class="form-label" for="gender">Gender</label><select class="form-select" id="gender" name="gender"><option value="">All</option>@foreach (var value in Enum.GetValues<Gender>()) { <option value="@value" selected="@(Model.Gender == value)">@value</option> }</select></div>
+    <div class="col-md-2"><label class="form-label" for="roleId">Role</label><select class="form-select" id="roleId" name="roleId"><option value="">All</option>@foreach (var role in Model.Roles) { <option value="@role.Id" selected="@(Model.RoleId == role.Id)">@role.Name</option> }</select></div>
+    <div class="col-md-2"><label class="form-label" for="status">Status</label><select class="form-select" id="status" name="status"><option value="">All</option>@foreach (var value in Enum.GetValues<UserStatus>()) { <option value="@value" selected="@(Model.Status == value)">@value</option> }</select></div>
+    <div class="col-md-2 d-grid"><button class="btn btn-outline-primary" type="submit">Apply filters</button></div>
+</div></form>
+<div class="table-responsive"><table class="table table-hover align-middle"><thead><tr>
+    @foreach (var column in new[] { "Id", "FullName", "Email", "Mobile", "Gender", "Role", "Status" }) { <th><a asp-action="Index" asp-route-search="@Model.Search" asp-route-gender="@Model.Gender" asp-route-roleId="@Model.RoleId" asp-route-status="@Model.Status" asp-route-sort="@column" asp-route-direction="@NextDirection(column)">@(column == "FullName" ? "Full name" : column)</a></th> }
+    <th class="text-end">Actions</th></tr></thead><tbody>
+    @if (Model.Results.Items.Count == 0) { <tr><td colspan="8" class="text-center text-muted py-4">No users found.</td></tr> }
+    else { @foreach (var item in Model.Results.Items) { <tr data-user-row><td>@item.Id</td><td>@item.FullName</td><td>@item.Email</td><td>@item.Mobile</td><td>@item.Gender</td><td>@item.RoleName</td><td><span class="badge @(item.Status == UserStatus.Active ? "text-bg-success" : "text-bg-secondary")">@item.Status</span></td><td class="text-end"><a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a> <a class="btn btn-sm btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a></td></tr> } }
+</tbody></table></div>
+@if (Model.Results.TotalPages > 1) { <nav aria-label="User pages"><ul class="pagination justify-content-center">
+    <li class="page-item @(!Model.Results.HasPreviousPage ? "disabled" : null)"><a class="page-link" asp-action="Index" asp-route-search="@Model.Search" asp-route-gender="@Model.Gender" asp-route-roleId="@Model.RoleId" asp-route-status="@Model.Status" asp-route-sort="@Model.Sort" asp-route-direction="@Model.Direction" asp-route-page="@(Model.Results.Page - 1)">Previous</a></li>
+    @for (var pageNumber = 1; pageNumber <= Model.Results.TotalPages; pageNumber++) { <li class="page-item @(pageNumber == Model.Results.Page ? "active" : null)"><a class="page-link" asp-action="Index" asp-route-search="@Model.Search" asp-route-gender="@Model.Gender" asp-route-roleId="@Model.RoleId" asp-route-status="@Model.Status" asp-route-sort="@Model.Sort" asp-route-direction="@Model.Direction" asp-route-page="@pageNumber">@pageNumber</a></li> }
+    <li class="page-item @(!Model.Results.HasNextPage ? "disabled" : null)"><a class="page-link" asp-action="Index" asp-route-search="@Model.Search" asp-route-gender="@Model.Gender" asp-route-roleId="@Model.RoleId" asp-route-status="@Model.Status" asp-route-sort="@Model.Sort" asp-route-direction="@Model.Direction" asp-route-page="@(Model.Results.Page + 1)">Next</a></li>
+</ul></nav> }
