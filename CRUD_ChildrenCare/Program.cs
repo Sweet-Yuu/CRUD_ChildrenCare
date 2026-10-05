@@ -1,6 +1,7 @@
 using CRUD_ChildrenCare.Data;
 using CRUD_ChildrenCare.Models;
 using CRUD_ChildrenCare.Options;
+using CRUD_ChildrenCare.Services.Accounts;
 using CRUD_ChildrenCare.Services.Email;
 using CRUD_ChildrenCare.Services.Security;
 using CRUD_ChildrenCare.Services.Time;
@@ -20,6 +21,7 @@ builder.Services.AddSingleton<IClock, SystemClock>();
 builder.Services.AddSingleton<ISecureTokenService, SecureTokenService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<DatabaseSeeder>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 if (builder.Environment.IsDevelopment())
 {
