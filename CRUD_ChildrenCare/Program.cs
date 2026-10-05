@@ -5,6 +5,7 @@ using CRUD_ChildrenCare.Security;
 using CRUD_ChildrenCare.Services.Accounts;
 using CRUD_ChildrenCare.Services.Email;
 using CRUD_ChildrenCare.Services.Files;
+using CRUD_ChildrenCare.Services.Menus;
 using CRUD_ChildrenCare.Services.Security;
 using CRUD_ChildrenCare.Services.Time;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -37,6 +38,7 @@ builder.Services.AddSingleton<IPasswordGenerator, PasswordGenerator>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<DatabaseSeeder>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IAdminMenuService, AdminMenuService>();
 builder.Services.AddOptions<AvatarOptions>()
     .Bind(builder.Configuration.GetSection(AvatarOptions.SectionName))
     .Validate(options => options.MaximumBytes > 0, "Avatar maximum size must be greater than zero.")

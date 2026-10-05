@@ -1,0 +1,14 @@
+@model CRUD_ChildrenCare.Areas.Admin.ViewModels.Authorization.RoleMenuAssignmentViewModel
+@{ ViewData["Title"] = "Authorization"; }
+<div class="row justify-content-center"><div class="col-lg-8"><h1>Role menu authorization</h1><p class="text-muted">Choose which administration links are visible to each role. Server authorization remains enforced independently.</p>
+@if (Model.Roles.Count == 0) { <div class="alert alert-warning">No active roles are available.</div> }
+else {
+    <form method="get" class="card card-body mb-4"><label class="form-label" for="roleFilter">Role</label><div class="input-group"><select class="form-select" id="roleFilter" name="roleId">@foreach (var role in Model.Roles) { <option value="@role.Id" selected="@(Model.RoleId == role.Id)">@role.Name</option> }</select><button class="btn btn-outline-primary" type="submit">Load role</button></div></form>
+    <form asp-action="Index" method="post"><div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div><input asp-for="RoleId" type="hidden" /><span asp-validation-for="RoleId" class="text-danger"></span><span asp-validation-for="SelectedMenuIds" class="text-danger d-block mb-3"></span>
+        <div class="card"><div class="card-header">Administration menus</div><div class="list-group list-group-flush">
+        @if (Model.Menus.Count == 0) { <div class="list-group-item text-muted">No active administration menus are available.</div> }
+        else { @foreach (var menu in Model.Menus) { <label class="list-group-item d-flex gap-2 align-items-center"><input class="form-check-input" type="checkbox" name="SelectedMenuIds" value="@menu.Id" checked="@Model.SelectedMenuIds.Contains(menu.Id)" /> <span>@menu.Name</span></label> } }
+        </div></div><button class="btn btn-primary mt-3" type="submit">Save authorization</button>
+    </form>
+}
+</div></div>
