@@ -364,3 +364,6 @@ FodyWeavers.xsd
 
 # Local isolated feature worktrees
 .worktrees/
+
+# Superpowers execution ledger and review scratch files
+.superpowers/
