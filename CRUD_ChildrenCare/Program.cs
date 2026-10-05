@@ -45,7 +45,9 @@ builder.Services.AddOptions<AvatarOptions>()
     .ValidateOnStart();
 builder.Services.AddScoped<IAvatarStorage, LocalAvatarStorage>();
 
-if (builder.Environment.IsDevelopment())
+var useSmtp = !builder.Environment.IsDevelopment()
+    || builder.Configuration.GetValue("Email:UseSmtp", false);
+if (!useSmtp)
 {
     builder.Services.AddSingleton<IEmailSender, LoggingEmailSender>();
 }
@@ -61,6 +63,14 @@ else
 }
 
 var app = builder.Build();
+
+if (app.Configuration.GetValue("Database:InitializeOnStartup", true))
+{
+    await using var scope = app.Services.CreateAsyncScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await dbContext.Database.MigrateAsync();
+    await scope.ServiceProvider.GetRequiredService<DatabaseSeeder>().SeedAsync(CancellationToken.None);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

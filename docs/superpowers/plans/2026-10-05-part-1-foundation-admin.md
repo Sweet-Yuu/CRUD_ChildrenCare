@@ -93,7 +93,7 @@ Run: `dotnet build CRUD_ChildrenCare.sln`
 
 Expected: Build succeeds with zero errors.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add .config CRUD_ChildrenCare CRUD_ChildrenCare.Tests CRUD_ChildrenCare.sln
@@ -489,6 +489,8 @@ git commit -m "feat: polish layouts and error handling"
 
 ### Task 10: SQL Server Migration and End-to-End Verification
 
+**Execution status:** Complete on 2026-10-05. `ChildrenCareDb` was migrated and seeded on the local default SQL Server instance; automated and HTTP smoke checks passed. Windows browser automation was attempted but unavailable because the Computer Use native helper pipe was not running, so visual behavior was verified through rendered MVC integration tests and responsive markup checks.
+
 **Files:**
 - Create: `CRUD_ChildrenCare/Migrations/*`
 - Create: `README.md`
@@ -498,7 +500,7 @@ git commit -m "feat: polish layouts and error handling"
 - Consumes: the complete application from Tasks 1-9.
 - Produces: reproducible schema creation, verified local database, and developer run/configuration instructions.
 
-- [ ] **Step 1: Restore the local EF tool and create the initial migration**
+- [x] **Step 1: Restore the local EF tool and create the initial migration**
 
 Run: `dotnet tool restore`
 
@@ -506,33 +508,33 @@ Run: `dotnet ef migrations add InitialPart1 --project CRUD_ChildrenCare --startu
 
 Expected: migration files describe Users, Settings, RoleMenus, constraints, and indexes.
 
-- [ ] **Step 2: Run the complete automated test suite**
+- [x] **Step 2: Run the complete automated test suite**
 
 Run: `dotnet test CRUD_ChildrenCare.sln`
 
 Expected: all tests pass.
 
-- [ ] **Step 3: Apply the migration to local SQL Server**
+- [x] **Step 3: Apply the migration to local SQL Server**
 
 Run: `dotnet ef database update --project CRUD_ChildrenCare --startup-project CRUD_ChildrenCare`
 
 Expected: `ChildrenCareDb` is created successfully on `localhost`.
 
-- [ ] **Step 4: Start the application and capture the one-time Admin credential from Development logs**
+- [x] **Step 4: Start the application and capture the one-time Admin credential from Development logs**
 
 Run: `dotnet run --project CRUD_ChildrenCare --no-build`
 
 Expected: application starts, seed completes, and the temporary Admin credential is logged once.
 
-- [ ] **Step 5: Perform HTTP and browser smoke checks**
+- [x] **Step 5: Perform HTTP and rendered-layout smoke checks**
 
 Verify public registration/login pages, authenticated profile and password flows, Admin Users/Settings/Authorization screens, redirect-to-login behavior, 403 behavior, validation messages, filtering/sorting/pagination, and responsive layouts. Confirm verification/reset links from Development email logs work once and then fail safely.
 
-- [ ] **Step 6: Add setup and SMTP configuration instructions**
+- [x] **Step 6: Add setup and SMTP configuration instructions**
 
 Document prerequisites, connection string, migration commands, Development email behavior, User Secrets keys for SMTP, avatar path, Admin bootstrap behavior, and test commands without including any secret value.
 
-- [ ] **Step 7: Re-run final verification**
+- [x] **Step 7: Re-run final verification**
 
 Run: `dotnet test CRUD_ChildrenCare.sln`
 

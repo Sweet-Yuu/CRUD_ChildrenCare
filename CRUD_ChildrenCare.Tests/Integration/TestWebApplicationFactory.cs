@@ -22,6 +22,7 @@ public sealed class TestWebApplicationFactory : WebApplicationFactory<Program>
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment(Environments.Development);
+        builder.UseSetting("Database:InitializeOnStartup", "false");
         builder.ConfigureServices(services =>
         {
             connection.Open();
