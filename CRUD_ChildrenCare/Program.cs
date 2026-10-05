@@ -1,6 +1,7 @@
 using CRUD_ChildrenCare.Data;
 using CRUD_ChildrenCare.Models;
 using CRUD_ChildrenCare.Options;
+using CRUD_ChildrenCare.Security;
 using CRUD_ChildrenCare.Services.Accounts;
 using CRUD_ChildrenCare.Services.Email;
 using CRUD_ChildrenCare.Services.Security;
@@ -15,8 +16,20 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie();
+    .AddCookie(options =>
+    {
+        options.Cookie.Name = "ChildrenCare.Auth";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+        options.SlidingExpiration = true;
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.EventsType = typeof(ApplicationCookieEvents);
+    });
 builder.Services.AddAuthorization();
+builder.Services.AddScoped<ApplicationCookieEvents>();
 builder.Services.AddSingleton<IClock, SystemClock>();
 builder.Services.AddSingleton<ISecureTokenService, SecureTokenService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
@@ -64,3 +77,5 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+public partial class Program;
