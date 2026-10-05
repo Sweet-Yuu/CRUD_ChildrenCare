@@ -1,0 +1,124 @@
+@using CRUD_ChildrenCare.Models.Enums
+@model CRUD_ChildrenCare.Areas.Admin.ViewModels.Posts.PostListViewModel
+@{ ViewData["Title"] = "Manage Posts"; }
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Manage Posts</h2>
+    <a asp-action="Create" class="btn btn-primary">Create New Post</a>
+</div>
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-3">
+                <input type="text" name="search" class="form-control" placeholder="Search by title..." value="@Model.SearchQuery">
+            </div>
+            <div class="col-md-2">
+                <select name="categoryId" class="form-select">
+                    <option value="">All Categories</option>
+                    @foreach (var cat in Model.Categories)
+                    {
+                        if (Model.CategoryId == cat.Id) { <option value="@cat.Id" selected>@cat.Name</option> }
+                        else { <option value="@cat.Id">@cat.Name</option> }
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select name="authorId" class="form-select">
+                    <option value="">All Authors</option>
+                    @foreach (var author in Model.Authors)
+                    {
+                        if (Model.AuthorId == author.Id) { <option value="@author.Id" selected>@author.FullName</option> }
+                        else { <option value="@author.Id">@author.FullName</option> }
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select name="status" class="form-select">
+                    <option value="">All Statuses</option>
+                    @foreach (var s in Enum.GetValues<PostStatus>())
+                    {
+                        if (Model.Status == s.ToString()) { <option value="@s" selected>@s</option> }
+                        else { <option value="@s">@s</option> }
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select name="sort" class="form-select">
+                    <option value="">Sort by...</option>
+                    @foreach (var sort in new[] { "Title", "TitleDesc", "Category", "Author", "Status" })
+                    {
+                        if (Model.Sort == sort) { <option value="@sort" selected>@sort</option> }
+                        else { <option value="@sort">@sort</option> }
+                    }
+                </select>
+            </div>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-secondary w-100">Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="table-responsive bg-white rounded shadow-sm">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th>Thumb</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Author</th>
+                <th>Featured</th>
+                <th>Status</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var post in Model.Posts)
+            {
+                <tr>
+                    <td><img src="@post.Thumbnail" width="50" height="50" style="object-fit:cover;" class="rounded" /></td>
+                    <td>@post.Title</td>
+                    <td>@post.Category?.Name</td>
+                    <td>@post.Author?.FullName</td>
+                    <td>
+                        @if (post.IsFeatured) { <span class="badge bg-warning text-dark">Yes</span> }
+                        else { <span class="badge bg-secondary">No</span> }
+                    </td>
+                    <td>
+                        @if (post.Status == PostStatus.Published) { <span class="badge bg-success">Published</span> }
+                        else { <span class="badge bg-secondary">Hidden</span> }
+                    </td>
+                    <td class="text-end">
+                        <a asp-action="Edit" asp-route-id="@post.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <form asp-action="ToggleStatus" asp-route-id="@post.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm @(post.Status == PostStatus.Published ? "btn-outline-danger" : "btn-outline-success")">
+                                @(post.Status == PostStatus.Published ? "Hide" : "Show")
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (Model.TotalPages > 1)
+{
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-search="@Model.SearchQuery" asp-route-categoryId="@Model.CategoryId" asp-route-authorId="@Model.AuthorId" asp-route-status="@Model.Status" asp-route-sort="@Model.Sort" asp-route-page="@(Model.PageIndex - 1)">Previous</a>
+            </li>
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(Model.PageIndex == i ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-search="@Model.SearchQuery" asp-route-categoryId="@Model.CategoryId" asp-route-authorId="@Model.AuthorId" asp-route-status="@Model.Status" asp-route-sort="@Model.Sort" asp-route-page="@i">@i</a>
+                </li>
+            }
+            <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-search="@Model.SearchQuery" asp-route-categoryId="@Model.CategoryId" asp-route-authorId="@Model.AuthorId" asp-route-status="@Model.Status" asp-route-sort="@Model.Sort" asp-route-page="@(Model.PageIndex + 1)">Next</a>
+            </li>
+        </ul>
+    </nav>
+}

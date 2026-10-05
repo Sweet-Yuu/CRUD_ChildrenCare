@@ -1,0 +1,84 @@
+@model CRUD_ChildrenCare.ViewModels.Blogs.BlogListViewModel
+@{ ViewData["Title"] = "Blogs"; }
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-6 fw-bold">Blogs & Articles</h1>
+    </div>
+
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-5">
+            <input type="text" name="search" class="form-control" placeholder="Search by title or content..." value="@Model.SearchQuery">
+        </div>
+        <div class="col-md-5">
+            <select name="categoryId" class="form-select">
+                <option value="">All Categories</option>
+                @foreach (var category in Model.Categories)
+                {
+                    if (Model.CategoryId == category.Id)
+                    {
+                        <option value="@category.Id" selected>@category.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Filter</button>
+        </div>
+    </form>
+
+    @if (!Model.Posts.Any())
+    {
+        <div class="alert alert-info">No blogs found matching your criteria.</div>
+    }
+    else
+    {
+        <div class="row g-4 mb-4">
+            @foreach (var post in Model.Posts)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <img src="@post.Thumbnail" class="card-img-top" alt="@post.Title" style="height: 250px; object-fit: cover;">
+                        <div class="card-body">
+                            <span class="badge bg-primary mb-2">@post.Category?.Name</span>
+                            @if (post.IsFeatured)
+                            {
+                                <span class="badge bg-warning text-dark mb-2 ms-1">Featured</span>
+                            }
+                            <h5 class="card-title">@post.Title</h5>
+                            <p class="card-text text-muted small mb-2">@post.UpdatedDate.ToString("MMM dd, yyyy") &bull; By @post.Author?.FullName</p>
+                            <p class="card-text">@post.BriefInfo</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pt-0">
+                            <a asp-action="Details" asp-route-id="@post.Id" class="btn btn-outline-primary w-100">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if (Model.TotalPages > 1)
+        {
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-search="@Model.SearchQuery" asp-route-categoryId="@Model.CategoryId" asp-route-page="@(Model.PageIndex - 1)">Previous</a>
+                    </li>
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(Model.PageIndex == i ? "active" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-search="@Model.SearchQuery" asp-route-categoryId="@Model.CategoryId" asp-route-page="@i">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-search="@Model.SearchQuery" asp-route-categoryId="@Model.CategoryId" asp-route-page="@(Model.PageIndex + 1)">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        }
+    }
+</div>

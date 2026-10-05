@@ -1,0 +1,51 @@
+@using CRUD_ChildrenCare.Models.Enums
+@model CRUD_ChildrenCare.Areas.Admin.ViewModels.Sliders.SliderFormViewModel
+@{ ViewData["Title"] = "Edit Slider"; }
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Edit Slider</h2>
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="Title" class="form-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Status" class="form-label">Status</label>
+                    <select asp-for="Status" class="form-select">
+                        @foreach (var s in Enum.GetValues<SliderStatus>()) { <option value="@s">@s</option> }
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ImageUrl" class="form-label">Image URL</label>
+                <input asp-for="ImageUrl" class="form-control" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="BackLink" class="form-label">Back Link (URL)</label>
+                <input asp-for="BackLink" class="form-control" placeholder="https://" />
+                <span asp-validation-for="BackLink" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Notes" class="form-label">Notes (Optional)</label>
+                <textarea asp-for="Notes" class="form-control" rows="2"></textarea>
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+        </form>
+    </div>
+</div>
