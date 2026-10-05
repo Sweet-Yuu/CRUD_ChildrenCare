@@ -12,6 +12,11 @@
         <nav class="navbar navbar-expand-lg navbar-light site-navbar">
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center gap-2" href="/"><span class="brand-mark">+</span><span>Children Care</span></a>
+                <div class="navbar-nav me-auto ms-3 d-flex flex-row gap-3">
+                    <a class="nav-link fw-semibold" href="/">Home</a>
+                    <a class="nav-link fw-semibold" asp-controller="Blogs" asp-action="Index">Blogs</a>
+                    <a class="nav-link fw-semibold" asp-controller="Services" asp-action="Index">Services</a>
+                </div>
                 <div class="ms-auto d-flex gap-2 align-items-center">
                     @if (User.Identity?.IsAuthenticated == true)
                     {

@@ -20,7 +20,10 @@ public static class SystemData
     [
         new(SettingType.AdminMenu, "Users", "/Admin/Users", "Manage user accounts"),
         new(SettingType.AdminMenu, "Settings", "/Admin/Settings", "Manage application settings"),
-        new(SettingType.AdminMenu, "Authorization", "/Admin/Authorization", "Assign menus to roles")
+        new(SettingType.AdminMenu, "Authorization", "/Admin/Authorization", "Assign menus to roles"),
+        new(SettingType.AdminMenu, "Posts", "/Admin/Posts", "Manage blog posts"),
+        new(SettingType.AdminMenu, "Sliders", "/Admin/Sliders", "Manage home sliders"),
+        new(SettingType.AdminMenu, "Services", "/Admin/Services", "Manage health care services")
     ];
 
     public static readonly IReadOnlyList<SettingSeed> SampleCategories =

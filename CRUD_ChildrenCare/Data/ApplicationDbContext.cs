@@ -10,6 +10,8 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
     public DbSet<RoleMenu> RoleMenus => Set<RoleMenu>();
     public DbSet<Post> Posts => Set<Post>();
     public DbSet<Slider> Sliders => Set<Slider>();
+    public DbSet<Service> Services => Set<Service>();
+    public DbSet<ServiceImage> ServiceImages => Set<ServiceImage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -77,6 +79,25 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
         slider.Property(item => item.BackLink).HasMaxLength(500);
         slider.Property(item => item.Status).HasConversion<string>().HasMaxLength(20);
         slider.Property(item => item.Notes).HasMaxLength(500);
+
+        var service = modelBuilder.Entity<Service>();
+        service.Property(item => item.Title).HasMaxLength(200);
+        service.Property(item => item.Thumbnail).HasMaxLength(255);
+        service.Property(item => item.BriefInfo).HasMaxLength(500);
+        service.Property(item => item.ListPrice).HasColumnType("decimal(18,0)");
+        service.Property(item => item.SalePrice).HasColumnType("decimal(18,0)");
+        service.Property(item => item.Status).HasConversion<string>().HasMaxLength(20);
+        service.HasOne(item => item.Category)
+            .WithMany()
+            .HasForeignKey(item => item.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+        service.HasMany(item => item.ServiceImages)
+            .WithOne(item => item.Service)
+            .HasForeignKey(item => item.ServiceId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        var serviceImage = modelBuilder.Entity<ServiceImage>();
+        serviceImage.Property(item => item.ImageUrl).HasMaxLength(255);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -109,6 +130,19 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
         }
 
         foreach (var entry in ChangeTracker.Entries<Slider>())
+        {
+            if (entry.State == EntityState.Added)
+            {
+                entry.Entity.CreatedDate = now;
+            }
+
+            if (entry.State is EntityState.Added or EntityState.Modified)
+            {
+                entry.Entity.UpdatedDate = now;
+            }
+        }
+
+        foreach (var entry in ChangeTracker.Entries<Service>())
         {
             if (entry.State == EntityState.Added)
             {

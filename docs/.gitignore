@@ -1,0 +1,13 @@
+# Temporary Office files
+~$*.docx
+~$*.xlsx
+~$*.pptx
+
+# Temporary files & backups
+*.tmp
+*.bak
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db

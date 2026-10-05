@@ -1,0 +1,158 @@
+@using CRUD_ChildrenCare.Models.Enums
+@model CRUD_ChildrenCare.Areas.Admin.ViewModels.Services.ServiceFormViewModel
+@{
+    ViewData["Title"] = "Edit Service";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0 fw-bold"><i class="bi bi-pencil-square me-2"></i> Edit Service #@Model.Id</h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Id" />
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-8">
+                            <label asp-for="Title" class="form-label fw-bold">Service Title *</label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="CategoryId" class="form-label fw-bold">Category *</label>
+                            <select asp-for="CategoryId" class="form-select">
+                                <option value="">Select Category</option>
+                                @foreach (var cat in Model.Categories)
+                                {
+                                    if (Model.CategoryId == cat.Id)
+                                    {
+                                        <option value="@cat.Id" selected>@cat.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@cat.Id">@cat.Name</option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3 align-items-center">
+                        <div class="col-md-2 text-center">
+                            @if (!string.IsNullOrWhiteSpace(Model.Thumbnail))
+                            {
+                                <img src="@Model.Thumbnail" class="img-thumbnail" style="height: 80px; width: 80px; object-fit: cover;" alt="Current Thumbnail" />
+                            }
+                        </div>
+                        <div class="col-md-5">
+                            <label asp-for="ThumbnailFile" class="form-label fw-bold">Replace Thumbnail Image</label>
+                            <input asp-for="ThumbnailFile" type="file" class="form-control" accept="image/jpeg,image/png,image/webp" />
+                            <span asp-validation-for="ThumbnailFile" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-5">
+                            <label asp-for="Thumbnail" class="form-label fw-bold">Thumbnail URL</label>
+                            <input asp-for="Thumbnail" class="form-control" />
+                            <span asp-validation-for="Thumbnail" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="BriefInfo" class="form-label fw-bold">Brief Information *</label>
+                        <textarea asp-for="BriefInfo" class="form-control" rows="2"></textarea>
+                        <span asp-validation-for="BriefInfo" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label fw-bold">Detailed Description (HTML Supported) *</label>
+                        <textarea asp-for="Description" class="form-control" rows="6"></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-3">
+                            <label asp-for="NumberOfPerson" class="form-label fw-bold">Target Persons *</label>
+                            <input asp-for="NumberOfPerson" type="number" class="form-control" min="1" />
+                            <span asp-validation-for="NumberOfPerson" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="ListPrice" class="form-label fw-bold">List Price (VND) *</label>
+                            <input asp-for="ListPrice" type="number" class="form-control" step="1000" min="1" />
+                            <span asp-validation-for="ListPrice" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="SalePrice" class="form-label fw-bold">Sale Price (VND) *</label>
+                            <input asp-for="SalePrice" type="number" class="form-control" step="1000" min="1" />
+                            <span asp-validation-for="SalePrice" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="AvailableQuantity" class="form-label fw-bold">Available Quantity *</label>
+                            <input asp-for="AvailableQuantity" type="number" class="form-control" min="0" />
+                            <span asp-validation-for="AvailableQuantity" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <label asp-for="Status" class="form-label fw-bold">Status *</label>
+                            <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<ServiceStatus>()"></select>
+                            <span asp-validation-for="Status" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <div class="form-check form-switch mb-2">
+                                <input asp-for="IsFeatured" class="form-check-input" type="checkbox" role="switch">
+                                <label asp-for="IsFeatured" class="form-check-label fw-bold">Featured Service</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="NewImageFiles" class="form-label fw-bold">Add Additional Gallery Images</label>
+                        <input asp-for="NewImageFiles" type="file" multiple class="form-control" accept="image/jpeg,image/png,image/webp" />
+                        <span asp-validation-for="NewImageFiles" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 border-top pt-3">
+                        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i> Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-secondary text-white py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-images me-2"></i> Gallery Images (@Model.ExistingImages.Count / 10)</h5>
+            </div>
+            <div class="card-body p-4">
+                @if (!Model.ExistingImages.Any())
+                {
+                    <p class="text-muted mb-0">No additional gallery images attached.</p>
+                }
+                else
+                {
+                    <div class="row g-3">
+                        @foreach (var img in Model.ExistingImages)
+                        {
+                            <div class="col-md-3 col-6 text-center">
+                                <div class="border rounded p-2 position-relative">
+                                    <img src="@img.ImageUrl" class="img-fluid rounded mb-2" style="height: 120px; width: 100%; object-fit: cover;" alt="Service Image" />
+                                    <form asp-action="DeleteImage" method="post" onsubmit="return confirm('Are you sure you want to delete this image?');">
+                                        <input type="hidden" name="imageId" value="@img.Id" />
+                                        <input type="hidden" name="serviceId" value="@Model.Id" />
+                                        <button type="submit" class="btn btn-sm btn-danger w-100">
+                                            <i class="bi bi-trash me-1"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
