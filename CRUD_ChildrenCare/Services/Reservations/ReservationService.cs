@@ -2,10 +2,12 @@ using CRUD_ChildrenCare.Data;
 using CRUD_ChildrenCare.Models;
 using CRUD_ChildrenCare.Models.Enums;
 using Microsoft.EntityFrameworkCore;
+using CRUD_ChildrenCare.Services.Email;
+using Microsoft.Extensions.Configuration;
 
 namespace CRUD_ChildrenCare.Services.Reservations;
 
-public class ReservationService(ApplicationDbContext dbContext) : IReservationService
+public class ReservationService(ApplicationDbContext dbContext, IEmailSender emailSender, IConfiguration configuration) : IReservationService
 {
     public async Task<Reservation> GetOrCreateCartAsync(int? userId, string sessionCartId)
     {
@@ -164,9 +166,32 @@ public class ReservationService(ApplicationDbContext dbContext) : IReservationSe
         reservation.Notes = submitData.Notes;
         reservation.UpdatedDate = DateTime.UtcNow;
 
-        // Optionally assign random doctor/nurse here based on some logic, skipping for brevity
-        
+        // Auto assign staff (Doctor or Nurse)
+        var staffIds = await dbContext.Users
+            .Where(u => u.Role.Type == SettingType.UserRole && (u.Role.Name == "Doctor" || u.Role.Name == "Nurse"))
+            .Select(u => u.Id)
+            .ToListAsync();
+            
+        if (staffIds.Any())
+        {
+            var random = new Random();
+            reservation.AssignedStaffId = staffIds[random.Next(staffIds.Count)];
+        }
+
         await dbContext.SaveChangesAsync();
+
+        // Send email with bank info
+        var bankInfo = configuration.GetValue<string>("BankInfo") ?? "Ngân hàng: VCB - STK: 123456789 - Chủ TK: Hệ thống ChildrenCare";
+        var subject = $"Xác nhận đặt lịch khám #{reservation.Id}";
+        var body = $"<h3>Chào {reservation.ReceiverFullName},</h3>" +
+                   $"<p>Cảm ơn bạn đã đặt lịch khám. Đơn của bạn mang mã số <strong>#{reservation.Id}</strong>.</p>" +
+                   $"<p>Tổng thanh toán: {reservation.TotalCost:N0} VND</p>" +
+                   $"<p>Vui lòng chuyển khoản theo thông tin sau:</p>" +
+                   $"<blockquote>{bankInfo}</blockquote>" +
+                   $"<p>Chúng tôi sẽ liên hệ lại với bạn sớm nhất.</p>";
+                   
+        await emailSender.SendAsync(new EmailMessage(reservation.ReceiverEmail, subject, body), CancellationToken.None);
+
         return true;
     }
 
