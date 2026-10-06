@@ -1,0 +1,15 @@
+@model int
+@{
+    ViewData["Title"] = "Thành công";
+}
+
+<div class="text-center py-5">
+    <h1 class="display-4 text-success mb-4">🎉 Đặt lịch thành công!</h1>
+    <p class="lead">Cảm ơn bạn đã tin tưởng dịch vụ của chúng tôi.</p>
+    <p>Mã đơn đặt lịch của bạn là: <strong>#@Model</strong></p>
+    <p>Chúng tôi đã gửi email xác nhận và thông tin thanh toán tới hòm thư của bạn. Vui lòng kiểm tra email.</p>
+    <div class="mt-5">
+        <a class="btn btn-primary btn-lg me-3" asp-action="MyReservations">Xem lịch sử đặt lịch</a>
+        <a class="btn btn-outline-secondary btn-lg" href="/">Về trang chủ</a>
+    </div>
+</div>

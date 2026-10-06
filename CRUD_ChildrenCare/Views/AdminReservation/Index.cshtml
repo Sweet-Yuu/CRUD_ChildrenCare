@@ -1,0 +1,104 @@
+@model List<CRUD_ChildrenCare.Models.Reservation>
+@{
+    ViewData["Title"] = "Quản lý Lịch Khám";
+}
+
+<div class="card p-4 shadow-sm mb-4">
+    <h2 class="mb-4">Phân hệ Quản lý: Lịch Khám</h2>
+
+    <form method="get" class="row g-3 mb-4 p-3 bg-light rounded">
+        <div class="col-md-3">
+            <label class="form-label">Tìm kiếm (Mã/Tên)</label>
+            <input type="text" name="search" class="form-control" value="@ViewBag.Search" placeholder="Nhập tên hoặc mã..." />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Từ ngày (Ngày Đặt)</label>
+            <input type="date" name="fromDate" class="form-control" value="@ViewBag.FromDate" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Đến ngày (Ngày Đặt)</label>
+            <input type="date" name="toDate" class="form-control" value="@ViewBag.ToDate" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Trạng thái</label>
+            <select name="status" class="form-select" asp-items="Html.GetEnumSelectList<CRUD_ChildrenCare.Models.Enums.ReservationStatus>()">
+                <option value="">-- Tất cả --</option>
+            </select>
+        </div>
+        
+        @if (ViewBag.Role == "Manager")
+        {
+            <div class="col-md-2">
+                <label class="form-label">Nhân viên phụ trách</label>
+                <select name="staffId" class="form-select">
+                    <option value="">-- Tất cả --</option>
+                    @if(ViewBag.Staffs != null)
+                    {
+                        foreach (var s in (IEnumerable<CRUD_ChildrenCare.Models.User>)ViewBag.Staffs)
+                        {
+                            <option value="@s.Id" selected="@(ViewBag.StaffId == s.Id)">@s.FullName</option>
+                        }
+                    }
+                </select>
+            </div>
+        }
+        
+        <div class="col-md-1 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Lọc</button>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Mã ĐL</th>
+                    <th>Khách hàng</th>
+                    <th>Ngày đặt</th>
+                    <th>Ngày khám</th>
+                    <th>Nhân viên PT</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>#@item.Id</td>
+                        <td>
+                            <strong>@item.ReceiverFullName</strong><br/>
+                            <small class="text-muted">@item.ReceiverMobile</small>
+                        </td>
+                        <td>@item.ReservedDate.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="text-primary fw-bold">@item.CheckupTime.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@(item.AssignedStaff?.FullName ?? "Chưa phân công")</td>
+                        <td>
+                            @if (item.Status == CRUD_ChildrenCare.Models.Enums.ReservationStatus.Submitted)
+                            {
+                                <span class="badge bg-warning text-dark">Chờ khám</span>
+                            }
+                            else if (item.Status == CRUD_ChildrenCare.Models.Enums.ReservationStatus.Success)
+                            {
+                                <span class="badge bg-success">Đã khám</span>
+                            }
+                            else if (item.Status == CRUD_ChildrenCare.Models.Enums.ReservationStatus.Cancelled)
+                            {
+                                <span class="badge bg-danger">Đã hủy</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Chi tiết</a>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">Không tìm thấy dữ liệu.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

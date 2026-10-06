@@ -1,0 +1,82 @@
+@model CRUD_ChildrenCare.Models.Reservation
+@{
+    ViewData["Title"] = "Reservation Details";
+}
+
+<div class="card p-4 shadow-sm mb-4">
+    <h2>Chi tiết Đặt lịch #@Model.Id</h2>
+    
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h4>Thông tin khách hàng</h4>
+            <p><strong>Họ tên:</strong> @Model.ReceiverFullName</p>
+            <p><strong>Email:</strong> @Model.ReceiverEmail</p>
+            <p><strong>SĐT:</strong> @Model.ReceiverMobile</p>
+            <p><strong>Địa chỉ:</strong> @Model.ReceiverAddress</p>
+            <p><strong>Ghi chú:</strong> @Model.Notes</p>
+        </div>
+        <div class="col-md-6">
+            <h4>Thông tin khám</h4>
+            <p><strong>Ngày đặt:</strong> @Model.ReservedDate.ToString("dd/MM/yyyy HH:mm")</p>
+            <p><strong>Thời gian khám (Dự kiến):</strong> <span class="text-primary fw-bold">@Model.CheckupTime.ToString("dd/MM/yyyy HH:mm")</span></p>
+            <p><strong>Trạng thái:</strong> 
+                <span class="badge @(Model.Status == CRUD_ChildrenCare.Models.Enums.ReservationStatus.Submitted ? "bg-warning text-dark" : Model.Status == CRUD_ChildrenCare.Models.Enums.ReservationStatus.Success ? "bg-success" : "bg-danger")">
+                    @Model.Status
+                </span>
+            </p>
+            <p><strong>Nhân viên phụ trách:</strong> @(Model.AssignedStaff?.FullName ?? "Chưa phân công")</p>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Danh sách Dịch vụ</h4>
+    <table class="table table-bordered mt-2">
+        <thead class="table-light">
+            <tr>
+                <th>Dịch vụ</th>
+                <th>Đơn giá</th>
+                <th>Số lượng</th>
+                <th>Số người</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ReservationItems)
+            {
+                <tr>
+                    <td>@item.Service.Title</td>
+                    <td>@item.UnitPrice.ToString("N0") đ</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.NumberOfPerson</td>
+                    <td>@item.TotalCost.ToString("N0") đ</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="text-end fw-bold">Tổng thanh toán:</td>
+                <td class="fw-bold text-danger">@Model.TotalCost.ToString("N0") đ</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="mt-4 d-flex justify-content-between">
+        <a asp-action="MyReservations" class="btn btn-secondary">Quay lại danh sách</a>
+        
+        @if (Model.Status == CRUD_ChildrenCare.Models.Enums.ReservationStatus.Submitted)
+        {
+            <form asp-action="Cancel" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn hủy lịch này không?');">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="btn btn-danger">Hủy Đặt Lịch</button>
+            </form>
+        }
+    </div>
+</div>

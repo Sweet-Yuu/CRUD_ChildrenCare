@@ -1,0 +1,64 @@
+@model CRUD_ChildrenCare.Models.Reservation
+@{
+    ViewData["Title"] = "Your Cart";
+}
+
+<div class="card p-4 shadow-sm mb-4">
+    <h2 class="mb-4">🛒 Giỏ dịch vụ (Cart)</h2>
+
+    @if (Model == null || !Model.ReservationItems.Any())
+    {
+        <p class="text-muted">Giỏ của bạn đang trống.</p>
+        <a class="btn btn-primary" asp-controller="Services" asp-action="Index">Quay lại danh sách Dịch vụ</a>
+    }
+    else
+    {
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Dịch vụ</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Số người</th>
+                    <th>Thành tiền</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ReservationItems)
+                {
+                    <tr>
+                        <td>@item.Service.Title</td>
+                        <td>@item.UnitPrice.ToString("N0") đ</td>
+                        <td>
+                            <form asp-action="UpdateCartItem" method="post" class="d-inline-flex gap-2">
+                                <input type="hidden" name="itemId" value="@item.Id" />
+                                <input type="number" name="quantity" class="form-control form-control-sm" style="width: 70px;" value="@item.Quantity" min="1" />
+                                <input type="number" name="numberOfPerson" class="form-control form-control-sm" style="width: 70px;" value="@item.NumberOfPerson" min="1" />
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">Cập nhật</button>
+                            </form>
+                        </td>
+                        <td>@item.NumberOfPerson</td>
+                        <td class="fw-bold">@item.TotalCost.ToString("N0") đ</td>
+                        <td>
+                            <form asp-action="RemoveFromCart" method="post" class="d-inline">
+                                <input type="hidden" name="itemId" value="@item.Id" />
+                                <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="text-end fw-bold">Tổng thanh toán:</td>
+                    <td colspan="2" class="fw-bold text-danger fs-5">@Model.TotalCost.ToString("N0") đ</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="d-flex justify-content-end mt-4">
+            <a class="btn btn-success btn-lg" asp-action="Checkout">Tiến hành thanh toán (Checkout) ➡️</a>
+        </div>
+    }
+</div>

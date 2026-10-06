@@ -1,0 +1,121 @@
+@model CRUD_ChildrenCare.Models.Reservation
+@{
+    ViewData["Title"] = "Reservation Management Details";
+}
+
+<div class="card p-4 shadow-sm mb-4">
+    <h2>Quản lý chi tiết Đặt lịch #@Model.Id</h2>
+    
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h4>Thông tin khách hàng</h4>
+            <table class="table table-sm">
+                <tr><th>Họ tên:</th><td>@Model.ReceiverFullName</td></tr>
+                <tr><th>Email:</th><td>@Model.ReceiverEmail</td></tr>
+                <tr><th>SĐT:</th><td>@Model.ReceiverMobile</td></tr>
+                <tr><th>Giới tính:</th><td>@Model.ReceiverGender</td></tr>
+                <tr><th>Địa chỉ:</th><td>@Model.ReceiverAddress</td></tr>
+                <tr><th>Ghi chú:</th><td>@Model.Notes</td></tr>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h4>Thông tin hệ thống</h4>
+            <table class="table table-sm">
+                <tr><th>Ngày Submit:</th><td>@Model.ReservedDate.ToString("dd/MM/yyyy HH:mm")</td></tr>
+                <tr><th>Ngày khám dự kiến:</th><td class="text-primary fw-bold">@Model.CheckupTime.ToString("dd/MM/yyyy HH:mm")</td></tr>
+                <tr><th>Trạng thái:</th>
+                    <td>
+                        <span class="badge @(Model.Status == CRUD_ChildrenCare.Models.Enums.ReservationStatus.Submitted ? "bg-warning text-dark" : Model.Status == CRUD_ChildrenCare.Models.Enums.ReservationStatus.Success ? "bg-success" : "bg-danger")">
+                            @Model.Status
+                        </span>
+                    </td>
+                </tr>
+                <tr><th>Khách hàng hệ thống:</th><td>@(Model.User?.FullName ?? "Khách vãng lai")</td></tr>
+                <tr><th>Nhân viên phụ trách:</th><td>@(Model.AssignedStaff?.FullName ?? "Chưa phân công")</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Danh sách Dịch vụ</h4>
+    <table class="table table-bordered mt-2">
+        <thead class="table-light">
+            <tr>
+                <th>Dịch vụ</th>
+                <th>Đơn giá</th>
+                <th>Số lượng</th>
+                <th>Số người</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ReservationItems)
+            {
+                <tr>
+                    <td>@item.Service.Title</td>
+                    <td>@item.UnitPrice.ToString("N0") đ</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.NumberOfPerson</td>
+                    <td>@item.TotalCost.ToString("N0") đ</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="text-end fw-bold">Tổng thanh toán:</td>
+                <td class="fw-bold text-danger">@Model.TotalCost.ToString("N0") đ</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="mt-4 border-top pt-3">
+        <h4>Quản lý (Manager) - Cập nhật trạng thái</h4>
+        @if (ViewBag.Role == "Manager")
+        {
+            <form asp-action="UpdateStatusAndStaff" method="post" class="row g-3">
+                <input type="hidden" name="id" value="@Model.Id" />
+                
+                <div class="col-md-4">
+                    <label class="form-label">Trạng thái mới</label>
+                    <select name="status" class="form-select" asp-items="Html.GetEnumSelectList<CRUD_ChildrenCare.Models.Enums.ReservationStatus>()">
+                        <!-- We manually select the current status by logic, but asp-items is easiest if we don't bind directly. Let's just pass the current value -->
+                    </select>
+                </div>
+                
+                <div class="col-md-4">
+                    <label class="form-label">Phân công lại nhân viên</label>
+                    <select name="staffId" class="form-select">
+                        <option value="">-- Không phân công --</option>
+                        @if(ViewBag.Staffs != null)
+                        {
+                            foreach (var s in (IEnumerable<CRUD_ChildrenCare.Models.User>)ViewBag.Staffs)
+                            {
+                                <option value="@s.Id" selected="@(Model.AssignedStaffId == s.Id)">@s.FullName</option>
+                            }
+                        }
+                    </select>
+                </div>
+                
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-warning">Lưu thay đổi</button>
+                    <a asp-action="Index" class="btn btn-secondary ms-2">Quay lại</a>
+                </div>
+            </form>
+            <script>
+                // small script to select the current status automatically
+                document.addEventListener('DOMContentLoaded', () => {
+                    document.querySelector('select[name="status"]').value = "@((int)Model.Status)";
+                });
+            </script>
+        }
+        else
+        {
+            <p class="text-muted">Chỉ Manager mới có quyền cập nhật trạng thái và điều phối nhân viên.</p>
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        }
+    </div>
+</div>

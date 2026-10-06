@@ -1,0 +1,79 @@
+@model CRUD_ChildrenCare.ViewModels.Reservations.ReservationSubmitViewModel
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<div class="row">
+    <div class="col-md-7">
+        <div class="card p-4 shadow-sm mb-4">
+            <h2 class="mb-4">Thông tin đặt lịch (Contact)</h2>
+            <form asp-action="Checkout" method="post">
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="CheckupTime" class="form-label">Thời gian khám dự kiến</label>
+                    <input asp-for="CheckupTime" class="form-control" type="datetime-local" />
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ReceiverFullName" class="form-label">Họ và tên</label>
+                        <input asp-for="ReceiverFullName" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ReceiverGender" class="form-label">Giới tính</label>
+                        <select asp-for="ReceiverGender" class="form-select" asp-items="Html.GetEnumSelectList<CRUD_ChildrenCare.Models.Enums.Gender>()"></select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ReceiverEmail" class="form-label">Email liên hệ</label>
+                        <input asp-for="ReceiverEmail" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ReceiverMobile" class="form-label">Số điện thoại</label>
+                        <input asp-for="ReceiverMobile" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ReceiverAddress" class="form-label">Địa chỉ</label>
+                    <input asp-for="ReceiverAddress" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Notes" class="form-label">Ghi chú thêm</label>
+                    <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100">Submit (Xác nhận đặt lịch)</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="col-md-5">
+        <div class="card p-4 shadow-sm mb-4 bg-light">
+            <h4 class="mb-4">Tóm tắt dịch vụ</h4>
+            @if (Model.Cart != null)
+            {
+                <ul class="list-group mb-3">
+                    @foreach (var item in Model.Cart.ReservationItems)
+                    {
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">@item.Service.Title</h6>
+                                <small class="text-muted">SL: @item.Quantity | Số người: @item.NumberOfPerson</small>
+                            </div>
+                            <span class="text-muted">@item.TotalCost.ToString("N0") đ</span>
+                        </li>
+                    }
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Tổng thanh toán</span>
+                        <strong>@Model.Cart.TotalCost.ToString("N0") đ</strong>
+                    </li>
+                </ul>
+            }
+        </div>
+    </div>
+</div>
