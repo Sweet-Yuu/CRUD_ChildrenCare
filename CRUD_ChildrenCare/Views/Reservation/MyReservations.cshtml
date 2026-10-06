@@ -1,0 +1,72 @@
+@model List<CRUD_ChildrenCare.Models.Reservation>
+@{
+    ViewData["Title"] = "My Reservations";
+}
+
+<div class="card p-4 shadow-sm mb-4">
+    <h2 class="mb-4">📅 Lịch sử đặt khám (My Reservations)</h2>
+
+    @if (!Model.Any())
+    {
+        <p class="text-muted">Bạn chưa có lịch khám nào.</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Mã ĐL</th>
+                        <th>Ngày đặt</th>
+                        <th>Dịch vụ đầu tiên</th>
+                        <th>Thời gian khám</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th>Chi tiết</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var firstItem = item.ReservationItems.FirstOrDefault();
+                        <tr>
+                            <td>#@item.Id</td>
+                            <td>@item.ReservedDate.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                @if (firstItem != null)
+                                {
+                                    <span>@firstItem.Service.Title (SL: @firstItem.Quantity)</span>
+                                    if (item.ReservationItems.Count > 1)
+                                    {
+                                        <br/><small class="text-muted">+ @(item.ReservationItems.Count - 1) dịch vụ khác</small>
+                                    }
+                                }
+                            </td>
+                            <td class="fw-bold text-primary">@item.CheckupTime.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td class="fw-bold">@item.TotalCost.ToString("N0") đ</td>
+                            <td>
+                                @if (item.Status == CRUD_ChildrenCare.Models.Enums.ReservationStatus.Submitted)
+                                {
+                                    <span class="badge bg-warning text-dark">Chờ khám</span>
+                                }
+                                else if (item.Status == CRUD_ChildrenCare.Models.Enums.ReservationStatus.Success)
+                                {
+                                    <span class="badge bg-success">Đã khám</span>
+                                }
+                                else if (item.Status == CRUD_ChildrenCare.Models.Enums.ReservationStatus.Cancelled)
+                                {
+                                    <span class="badge bg-danger">Đã hủy</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Xem</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination logic here if needed based on ViewBag.CurrentPage and ViewBag.TotalPages -->
+    }
+</div>
