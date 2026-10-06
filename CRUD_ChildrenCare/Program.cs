@@ -8,6 +8,7 @@ using CRUD_ChildrenCare.Services.Files;
 using CRUD_ChildrenCare.Services.Menus;
 using CRUD_ChildrenCare.Services.Security;
 using CRUD_ChildrenCare.Services.Time;
+using CRUD_ChildrenCare.Services.Reservations;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,15 @@ builder.Services.AddOptions<AvatarOptions>()
     .Validate(options => options.MaximumBytes > 0, "Avatar maximum size must be greater than zero.")
     .ValidateOnStart();
 builder.Services.AddScoped<IAvatarStorage, LocalAvatarStorage>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromDays(7);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var useSmtp = !builder.Environment.IsDevelopment()
     || builder.Configuration.GetValue("Email:UseSmtp", false);
@@ -84,6 +94,7 @@ app.UseStatusCodePagesWithReExecute("/Home/NotFound", "?statusCode={0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession();
 
 app.UseRouting();
 
