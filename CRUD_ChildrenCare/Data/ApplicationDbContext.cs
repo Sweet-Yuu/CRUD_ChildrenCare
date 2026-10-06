@@ -12,6 +12,8 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
     public DbSet<Slider> Sliders => Set<Slider>();
     public DbSet<Service> Services => Set<Service>();
     public DbSet<ServiceImage> ServiceImages => Set<ServiceImage>();
+    public DbSet<Reservation> Reservations => Set<Reservation>();
+    public DbSet<ReservationItem> ReservationItems => Set<ReservationItem>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -98,6 +100,29 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
 
         var serviceImage = modelBuilder.Entity<ServiceImage>();
         serviceImage.Property(item => item.ImageUrl).HasMaxLength(255);
+
+        var reservation = modelBuilder.Entity<Reservation>();
+        reservation.Property(item => item.ReceiverGender).HasConversion<string>().HasMaxLength(20);
+        reservation.Property(item => item.Status).HasConversion<string>().HasMaxLength(20);
+        reservation.Property(item => item.ReceiverMobile).IsUnicode(false);
+        reservation.HasOne(item => item.User)
+            .WithMany()
+            .HasForeignKey(item => item.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+        reservation.HasOne(item => item.AssignedStaff)
+            .WithMany()
+            .HasForeignKey(item => item.AssignedStaffId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        var reservationItem = modelBuilder.Entity<ReservationItem>();
+        reservationItem.HasOne(item => item.Reservation)
+            .WithMany(item => item.ReservationItems)
+            .HasForeignKey(item => item.ReservationId)
+            .OnDelete(DeleteBehavior.Cascade);
+        reservationItem.HasOne(item => item.Service)
+            .WithMany()
+            .HasForeignKey(item => item.ServiceId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -143,6 +168,19 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
         }
 
         foreach (var entry in ChangeTracker.Entries<Service>())
+        {
+            if (entry.State == EntityState.Added)
+            {
+                entry.Entity.CreatedDate = now;
+            }
+
+            if (entry.State is EntityState.Added or EntityState.Modified)
+            {
+                entry.Entity.UpdatedDate = now;
+            }
+        }
+
+        foreach (var entry in ChangeTracker.Entries<Reservation>())
         {
             if (entry.State == EntityState.Added)
             {
