@@ -23,7 +23,8 @@ public static class SystemData
         new(SettingType.AdminMenu, "Authorization", "/Admin/Authorization", "Assign menus to roles"),
         new(SettingType.AdminMenu, "Posts", "/Admin/Posts", "Manage blog posts"),
         new(SettingType.AdminMenu, "Sliders", "/Admin/Sliders", "Manage home sliders"),
-        new(SettingType.AdminMenu, "Services", "/Admin/Services", "Manage health care services")
+        new(SettingType.AdminMenu, "Services", "/Admin/Services", "Manage health care services"),
+        new(SettingType.AdminMenu, "Reservations", "/Admin/Reservations", "Manage reservations")
     ];
 
     public static readonly IReadOnlyList<SettingSeed> SampleCategories =

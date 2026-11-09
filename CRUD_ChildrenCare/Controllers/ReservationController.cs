@@ -31,7 +31,7 @@ public class ReservationController(IReservationService reservationService) : Con
     public async Task<IActionResult> Cart()
     {
         var cart = await reservationService.GetOrCreateCartAsync(GetCurrentUserId(), GetCartSessionId());
-        if (!User.Identity.IsAuthenticated && string.IsNullOrEmpty(HttpContext.Session.GetString("CartId")))
+        if (User.Identity?.IsAuthenticated != true && string.IsNullOrEmpty(HttpContext.Session.GetString("CartId")))
         {
             HttpContext.Session.SetString("CartId", cart.Id.ToString());
         }
@@ -45,7 +45,7 @@ public class ReservationController(IReservationService reservationService) : Con
         await reservationService.AddToCartAsync(GetCurrentUserId(), cartSessionId, serviceId, quantity, numberOfPerson);
         
         var cart = await reservationService.GetOrCreateCartAsync(GetCurrentUserId(), cartSessionId);
-        if (!User.Identity.IsAuthenticated && string.IsNullOrEmpty(cartSessionId))
+        if (User.Identity?.IsAuthenticated != true && string.IsNullOrEmpty(cartSessionId))
         {
             HttpContext.Session.SetString("CartId", cart.Id.ToString());
         }
@@ -84,7 +84,7 @@ public class ReservationController(IReservationService reservationService) : Con
         };
 
         // Fill with user profile if logged in
-        if (User.Identity.IsAuthenticated)
+        if (User.Identity?.IsAuthenticated == true)
         {
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
             var userName = User.FindFirstValue(ClaimTypes.Name);
@@ -124,7 +124,7 @@ public class ReservationController(IReservationService reservationService) : Con
 
         if (success)
         {
-            if (!User.Identity.IsAuthenticated)
+            if (User.Identity?.IsAuthenticated != true)
             {
                 HttpContext.Session.Remove("CartId");
             }
@@ -148,9 +148,11 @@ public class ReservationController(IReservationService reservationService) : Con
     [HttpGet]
     public async Task<IActionResult> MyReservations(int page = 1)
     {
-        var userId = GetCurrentUserId().Value;
+        var userId = GetCurrentUserId();
+        if (!userId.HasValue) return Challenge();
+
         int pageSize = 10;
-        var result = await reservationService.GetMyReservationsAsync(userId, page, pageSize);
+        var result = await reservationService.GetMyReservationsAsync(userId.Value, page, pageSize);
 
         ViewBag.CurrentPage = page;
         ViewBag.TotalPages = result.TotalPages;
@@ -175,7 +177,10 @@ public class ReservationController(IReservationService reservationService) : Con
     [HttpPost]
     public async Task<IActionResult> Cancel(int id)
     {
-        var success = await reservationService.CancelReservationAsync(id, GetCurrentUserId().Value);
+        var userId = GetCurrentUserId();
+        if (!userId.HasValue) return Challenge();
+
+        var success = await reservationService.CancelReservationAsync(id, userId.Value);
         if (success)
         {
             TempData["Message"] = "Hủy đặt lịch thành công.";

@@ -1,0 +1,94 @@
+@model ReservationEditAdminViewModel
+@{
+    ViewData["Title"] = $"Edit Reservation #{Model.Id}";
+}
+
+<div class="mb-4">
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-sm mb-3">
+        &larr; Back to Reservation #@Model.Id Details
+    </a>
+    <h2 class="mb-1">Edit Reservation #@Model.Id</h2>
+    <p class="text-muted">Update appointment schedule, assigned medical staff, or status</p>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Id" />
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                    <!-- Customer Info (Read-only summary) -->
+                    <div class="p-3 bg-light rounded mb-4">
+                        <h6 class="fw-bold mb-2">Customer / Receiver</h6>
+                        <div class="row g-2 small">
+                            <div class="col-sm-6">
+                                <span class="text-muted">Name:</span> <span class="fw-semibold">@Model.ReceiverFullName</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-muted">Phone:</span> <span class="fw-semibold">@Model.ReceiverMobile</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-muted">Email:</span> <span class="fw-semibold">@Model.ReceiverEmail</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-muted">Total:</span> <span class="fw-bold text-primary">@Model.TotalCost.ToString("N0") ₫</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="mb-3">
+                        <label asp-for="Status" class="form-label fw-semibold"></label>
+                        <select asp-for="Status" class="form-select">
+                            @foreach (var s in Enum.GetValues<ReservationStatus>())
+                            {
+                                if (s == ReservationStatus.Cart) continue;
+                                <option value="@s" selected="@(Model.Status == s)">@s</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Status" class="text-danger small"></span>
+                        <div class="form-text">Setting to 'Cancelled' will automatically restore service available quantities.</div>
+                    </div>
+
+                    <!-- Assigned Staff -->
+                    <div class="mb-3">
+                        <label asp-for="AssignedStaffId" class="form-label fw-semibold"></label>
+                        <select asp-for="AssignedStaffId" class="form-select">
+                            <option value="">-- Select Doctor / Nurse --</option>
+                            @foreach (var staff in Model.Staffs)
+                            {
+                                <option value="@staff.Id" selected="@(Model.AssignedStaffId == staff.Id)">
+                                    @staff.FullName (@staff.Role?.Name)
+                                </option>
+                            }
+                        </select>
+                        <span asp-validation-for="AssignedStaffId" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Checkup Time -->
+                    <div class="mb-3">
+                        <label asp-for="CheckupTime" class="form-label fw-semibold"></label>
+                        <input asp-for="CheckupTime" type="datetime-local" class="form-control" value="@Model.CheckupTime.ToString("yyyy-MM-ddTHH:mm")" />
+                        <span asp-validation-for="CheckupTime" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="mb-4">
+                        <label asp-for="Notes" class="form-label fw-semibold"></label>
+                        <textarea asp-for="Notes" class="form-control" rows="4" placeholder="Internal remarks or medical scheduling notes..."></textarea>
+                        <span asp-validation-for="Notes" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

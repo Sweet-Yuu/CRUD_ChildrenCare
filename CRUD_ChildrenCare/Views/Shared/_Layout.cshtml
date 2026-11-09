@@ -22,9 +22,9 @@
                     @if (User.Identity?.IsAuthenticated == true)
                     {
                         <span class="text-muted">@User.Identity.Name</span>
-                        @if (User.IsInRole("Manager") || User.IsInRole("Doctor") || User.IsInRole("Nurse"))
+                        @if (User.IsInRole("Manager") || User.IsInRole("Doctor") || User.IsInRole("Nurse") || User.IsInRole("Admin"))
                         {
-                            <a class="btn btn-outline-warning btn-sm" asp-controller="AdminReservation" asp-action="Index">Admin Panel</a>
+                            <a class="btn btn-outline-warning btn-sm" asp-area="Admin" asp-controller="Reservations" asp-action="Index">Admin Panel</a>
                         }
                         <a class="btn btn-outline-info btn-sm" asp-controller="Reservation" asp-action="MyReservations">My Reservations</a>
                         <a class="btn btn-outline-primary btn-sm" asp-controller="Profile" asp-action="Index">My profile</a>

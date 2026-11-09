@@ -34,11 +34,11 @@ public sealed class DatabaseSeederTests
         await seeder.SeedAsync(CancellationToken.None);
 
         Assert.Equal(5, await context.Settings.CountAsync(item => item.Type == SettingType.UserRole));
-        Assert.Equal(3, await context.Settings.CountAsync(item => item.Type == SettingType.AdminMenu));
+        Assert.Equal(7, await context.Settings.CountAsync(item => item.Type == SettingType.AdminMenu));
         Assert.Equal(4, await context.Settings.CountAsync(item =>
             item.Type == SettingType.PostCategory || item.Type == SettingType.ServiceCategory));
-        Assert.Equal(3, await context.RoleMenus.CountAsync());
-        var admin = await context.Users.Include(item => item.Role).SingleAsync();
+        Assert.Equal(28, await context.RoleMenus.CountAsync());
+        var admin = await context.Users.Include(item => item.Role).SingleAsync(item => item.Email == "admin@childrencare.local");
         Assert.Equal("admin@childrencare.local", admin.Email);
         Assert.Equal(SystemData.RoleValues.Admin, admin.Role.Value);
         Assert.Equal(UserStatus.Active, admin.Status);
