@@ -1,5 +1,8 @@
 {
     "csharp-dev-tools.solutionViewer.selectedWorkspaceSolutions": [
         "CRUD_ChildrenCare.sln"
-    ]
+    ],
+    "workbench.editorAssociations": {
+        "*.drawio": "electropol-fr.drawio-diagrams-editor-text"
+    }
 }

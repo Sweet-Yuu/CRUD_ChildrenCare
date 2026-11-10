@@ -1,0 +1,82 @@
+<mxfile host="65bd71144e">
+    <diagram id="class-diagram-part3" name="Class Diagram Part 3 Services">
+        <mxGraphModel dx="563" dy="257" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="entity_user" parent="1" style="swipe;whiteSpace=wrap;html=1;align=left;spacingLeft=10;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=0;fontSize=11;strokeWidth=1;" value="&amp;lt;&amp;lt;entity&amp;gt;&amp;gt;&#xa;&lt;b&gt;User&lt;/b&gt;&#xa;&lt;font color=&quot;#666666&quot;&gt;(from Auth &amp;amp; Identity)&lt;/font&gt;&#xa;--&#xa;+ id: Integer [PK]&#xa;+ email: String [unique]&#xa;+ fullName: String&#xa;+ mobile: String [0..1]&#xa;+ avatarUrl: String [0..1]" vertex="1">
+                    <mxGeometry height="140" width="200" x="460" y="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="entity_manager" parent="1" style="swipe;whiteSpace=wrap;html=1;align=left;spacingLeft=10;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=0;fontSize=11;" value="&amp;lt;&amp;lt;entity&amp;gt;&amp;gt;&#xa;&lt;b&gt;Manager&lt;/b&gt;&#xa;&lt;font color=&quot;#666666&quot;&gt;(from Auth &amp;amp; Identity)&lt;/font&gt;&#xa;--&#xa;+ roleName: String = &quot;Manager&quot;" vertex="1">
+                    <mxGeometry height="80" width="180" x="220" y="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="entity_doctor" parent="1" style="swipe;whiteSpace=wrap;html=1;align=left;spacingLeft=10;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=0;fontSize=11;" value="&amp;lt;&amp;lt;entity&amp;gt;&amp;gt;&#xa;&lt;b&gt;Doctor&lt;/b&gt;&#xa;&lt;font color=&quot;#666666&quot;&gt;(from Auth &amp;amp; Identity)&lt;/font&gt;&#xa;--&#xa;+ roleName: String = &quot;Doctor&quot;" vertex="1">
+                    <mxGeometry height="80" width="180" x="470" y="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="entity_nurse" parent="1" style="swipe;whiteSpace=wrap;html=1;align=left;spacingLeft=10;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=0;fontSize=11;" value="&amp;lt;&amp;lt;entity&amp;gt;&amp;gt;&#xa;&lt;b&gt;Nurse&lt;/b&gt;&#xa;&lt;font color=&quot;#666666&quot;&gt;(from Auth &amp;amp; Identity)&lt;/font&gt;&#xa;--&#xa;+ roleName: String = &quot;Nurse&quot;" vertex="1">
+                    <mxGeometry height="80" width="180" x="720" y="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="gen_manager" edge="1" parent="1" source="entity_manager" style="endArrow=block;endSize=10;endFill=0;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" target="entity_user">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="gen_doctor" edge="1" parent="1" source="entity_doctor" style="endArrow=block;endSize=10;endFill=0;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="entity_user">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="gen_nurse" edge="1" parent="1" source="entity_nurse" style="endArrow=block;endSize=10;endFill=0;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="entity_user">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="entity_service" parent="1" style="swipe;whiteSpace=wrap;html=1;align=left;spacingLeft=10;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=0;fontSize=11;strokeWidth=2;" value="&amp;lt;&amp;lt;entity&amp;gt;&amp;gt;&#xa;&lt;b&gt;Service&lt;/b&gt;&#xa;&lt;font color=&quot;#666666&quot;&gt;(from Service Management)&lt;/font&gt;&#xa;--&#xa;+ id: Integer [PK]&#xa;+ title: String&#xa;+ thumbnail: String&#xa;+ categoryId: Integer [FK]&#xa;+ briefInfo: String&#xa;+ description: Text&#xa;+ numberOfPerson: Integer&#xa;+ listPrice: Decimal&#xa;+ salePrice: Decimal&#xa;+ availableQuantity: Integer&#xa;+ isFeatured: Boolean&#xa;+ status: ServiceStatus&#xa;+ createdDate: DateTime&#xa;+ updatedDate: DateTime" vertex="1">
+                    <mxGeometry height="290" width="280" x="410" y="380" as="geometry"/>
+                </mxCell>
+                <mxCell id="entity_category" parent="1" style="swipe;whiteSpace=wrap;html=1;align=left;spacingLeft=10;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=0;fontSize=11;" value="&amp;lt;&amp;lt;entity&amp;gt;&amp;gt;&#xa;&lt;b&gt;ServiceCategory&lt;/b&gt;&#xa;&lt;font color=&quot;#666666&quot;&gt;(from System Settings)&lt;/font&gt;&#xa;--&#xa;+ id: Integer [PK]&#xa;+ name: String&#xa;+ value: String [unique]&#xa;+ status: SettingStatus" vertex="1">
+                    <mxGeometry height="130" width="220" x="80" y="440" as="geometry"/>
+                </mxCell>
+                <mxCell id="entity_service_image" parent="1" style="swipe;whiteSpace=wrap;html=1;align=left;spacingLeft=10;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=0;fontSize=11;" value="&amp;lt;&amp;lt;entity&amp;gt;&amp;gt;&#xa;&lt;b&gt;ServiceImage&lt;/b&gt;&#xa;&lt;font color=&quot;#666666&quot;&gt;(from Service Management)&lt;/font&gt;&#xa;--&#xa;+ id: Integer [PK]&#xa;+ serviceId: Integer [FK]&#xa;+ imageUrl: String&#xa;+ sortOrder: Integer [0..1]" vertex="1">
+                    <mxGeometry height="130" width="220" x="820" y="440" as="geometry"/>
+                </mxCell>
+                <mxCell id="enum_service_status" parent="1" style="swipe;whiteSpace=wrap;html=1;align=left;spacingLeft=10;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=0;fontSize=11;" value="&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&#xa;&lt;b&gt;ServiceStatus&lt;/b&gt;&#xa;--&#xa;INACTIVE&#xa;ACTIVE" vertex="1">
+                    <mxGeometry height="90" width="140" x="490" y="700" as="geometry"/>
+                </mxCell>
+                <mxCell id="enum_setting_status" parent="1" style="swipe;whiteSpace=wrap;html=1;align=left;spacingLeft=10;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=0;fontSize=11;" value="&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&#xa;&lt;b&gt;SettingStatus&lt;/b&gt;&#xa;--&#xa;INACTIVE&#xa;ACTIVE" vertex="1">
+                    <mxGeometry height="90" width="140" x="120" y="620" as="geometry"/>
+                </mxCell>
+                <mxCell id="rel_manager_service" edge="1" parent="1" source="entity_manager" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="entity_service" value="manages &amp;gt;">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="lbl_m1" connectable="0" parent="rel_manager_service" style="edgeLabel;html=1;align=left;verticalAlign=bottom;" value="1" vertex="1">
+                    <mxGeometry relative="1" x="-0.8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lbl_m2" connectable="0" parent="rel_manager_service" style="edgeLabel;html=1;align=right;verticalAlign=top;" value="0..*" vertex="1">
+                    <mxGeometry relative="1" x="0.8" as="geometry"/>
+                </mxCell>
+                <mxCell id="rel_staff_service" edge="1" parent="1" source="entity_doctor" style="endArrow=none;html=1;rounded=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="entity_service" value="views (read-only) &amp;gt;">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="rel_service_category" edge="1" parent="1" source="entity_service" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="entity_category" value="belongs to &amp;gt;">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="lbl_sc1" connectable="0" parent="rel_service_category" style="edgeLabel;html=1;align=left;verticalAlign=bottom;" value="*" vertex="1">
+                    <mxGeometry relative="1" x="-0.8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lbl_sc2" connectable="0" parent="rel_service_category" style="edgeLabel;html=1;align=right;verticalAlign=top;" value="1" vertex="1">
+                    <mxGeometry relative="1" x="0.8" as="geometry"/>
+                </mxCell>
+                <mxCell id="rel_service_images" edge="1" parent="1" source="entity_service" style="endArrow=diamond;endFill=1;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="entity_service_image" value="serviceImages &amp;gt;">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="lbl_si1" connectable="0" parent="rel_service_images" style="edgeLabel;html=1;align=left;verticalAlign=bottom;" value="1" vertex="1">
+                    <mxGeometry relative="1" x="-0.8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lbl_si2" connectable="0" parent="rel_service_images" style="edgeLabel;html=1;align=right;verticalAlign=top;" value="0..*" vertex="1">
+                    <mxGeometry relative="1" x="0.8" as="geometry"/>
+                </mxCell>
+                <mxCell id="rel_service_status" edge="1" parent="1" source="entity_service" style="endArrow=open;endSize=8;dashed=1;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="enum_service_status" value="">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="rel_cat_status" edge="1" parent="1" source="entity_category" style="endArrow=open;endSize=8;dashed=1;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="enum_setting_status" value="">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

@@ -1,0 +1,121 @@
+<mxfile host="Electron" modified="2026-11-10T13:10:00.000Z" agent="Antigravity" version="21.6.8" type="device">
+  <diagram id="system-architecture-childrencare" name="System Architecture - Children Care">
+    <mxGraphModel dx="1200" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Outer Boundary Container -->
+        <mxCell id="sys_boundary" value="HỆ THỐNG CHILDREN CARE - KIẾN TRÚC TỔNG THỂ (SYSTEM ARCHITECTURE)" style="swimlane;whiteSpace=wrap;html=1;startSize=35;horizontal=1;fillColor=#f8f9fa;strokeColor=#3b82f6;fontStyle=1;fontSize=15;fontColor=#1e3a8a;rounded=1;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="60" y="30" width="1050" height="760" as="geometry" />
+        </mxCell>
+
+        <!-- 1. Client Layer -->
+        <mxCell id="layer_client" value="TẦNG KHÁCH HÀNG / THIẾT BỊ ĐẦU CUỐI (CLIENT LAYER - BROWSER &amp; DEVICE)" style="swimlane;whiteSpace=wrap;html=1;startSize=26;fillColor=#e0f2fe;strokeColor=#0284c7;fontStyle=1;fontSize=12;fontColor=#0369a1;rounded=1;" vertex="1" parent="sys_boundary">
+          <mxGeometry x="40" y="50" width="970" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="c_browser" value="&lt;b&gt;Web Browser / Mobile Clients&lt;/b&gt;&lt;br&gt;Khách vãng lai (Guest) / Khách hàng (Customer) / Quản lý (Manager) / Bác sĩ &amp; Y tá (Staff) / Quản trị viên (Admin)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0284c7;fontSize=11;fontColor=#0f172a;" vertex="1" parent="layer_client">
+          <mxGeometry x="30" y="35" width="450" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="c_front_tech" value="&lt;b&gt;Front-end UI Technologies&lt;/b&gt;&lt;br&gt;HTML5, CSS3, JavaScript, Bootstrap 5 Responsive Grid, jQuery, Unobtrusive Validation, Toastr.js" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0284c7;fontSize=11;fontColor=#0f172a;" vertex="1" parent="layer_client">
+          <mxGeometry x="500" y="35" width="440" height="42" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow 1: Client to App Server -->
+        <mxCell id="arr_client_server" value="HTTP / HTTPS Requests (MVC GET/POST, RESTful Ajax Requests, Form Multi-part Data)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#0284c7;strokeWidth=2;fontSize=11;fontStyle=1;fontColor=#0369a1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="sys_boundary" source="layer_client" target="layer_middleware">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 2. Middleware Pipeline -->
+        <mxCell id="layer_middleware" value="ASP.NET CORE 8.0 MIDDLEWARE PROCESSING PIPELINE" style="swimlane;whiteSpace=wrap;html=1;startSize=26;fillColor=#fff7ed;strokeColor=#ea580c;fontStyle=1;fontSize=12;fontColor=#c2410c;rounded=1;" vertex="1" parent="sys_boundary">
+          <mxGeometry x="40" y="180" width="970" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="m_exception" value="&lt;b&gt;Exception Handling&lt;/b&gt;&lt;br&gt;Global Error Pages / 404 &amp; 500" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;fontSize=10;fontColor=#334155;" vertex="1" parent="layer_middleware">
+          <mxGeometry x="20" y="35" width="165" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="m_static" value="&lt;b&gt;Static Files&lt;/b&gt;&lt;br&gt;wwwroot (CSS, JS, Uploads)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;fontSize=10;fontColor=#334155;" vertex="1" parent="layer_middleware">
+          <mxGeometry x="200" y="35" width="165" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="m_routing" value="&lt;b&gt;Routing Middleware&lt;/b&gt;&lt;br&gt;Public Routes &amp; Areas: Admin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;fontSize=10;fontColor=#334155;" vertex="1" parent="layer_middleware">
+          <mxGeometry x="380" y="35" width="175" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="m_authn" value="&lt;b&gt;Authentication&lt;/b&gt;&lt;br&gt;Secure Cookie Authentication" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;fontSize=10;fontColor=#334155;" vertex="1" parent="layer_middleware">
+          <mxGeometry x="570" y="35" width="180" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="m_authz" value="&lt;b&gt;Role Authorization&lt;/b&gt;&lt;br&gt;Admin, Manager, Staff, Customer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;fontSize=10;fontColor=#334155;" vertex="1" parent="layer_middleware">
+          <mxGeometry x="765" y="35" width="185" height="38" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow 2: Middleware to App Core -->
+        <mxCell id="arr_mw_app" value="Pipeline Context Dispatch" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#ea580c;strokeWidth=2;fontSize=11;fontStyle=1;fontColor=#c2410c;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="sys_boundary" source="layer_middleware" target="layer_app_core">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 3. Application Core (Presentation & Business Services) -->
+        <mxCell id="layer_app_core" value="ASP.NET CORE 8.0 MVC WEB APPLICATION CORE" style="swimlane;whiteSpace=wrap;html=1;startSize=26;fillColor=#f0fdf4;strokeColor=#16a34a;fontStyle=1;fontSize=12;fontColor=#15803d;rounded=1;" vertex="1" parent="sys_boundary">
+          <mxGeometry x="40" y="300" width="970" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- Sub-box: Presentation Layer -->
+        <mxCell id="sub_presentation" value="TẦNG TRÌNH DIỄN (PRESENTATION LAYER - MVC)" style="swimlane;whiteSpace=wrap;html=1;startSize=24;fillColor=#eff6ff;strokeColor=#2563eb;fontStyle=1;fontSize=11;fontColor=#1e40af;rounded=1;" vertex="1" parent="layer_app_core">
+          <mxGeometry x="20" y="35" width="460" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="p_public" value="&lt;b&gt;Public Controllers &amp; Views&lt;/b&gt;&lt;br&gt;+ ServicesController (Public List, Details)&lt;br&gt;+ HomeController, BlogsController, AccountController&lt;br&gt;+ Razor Views: Views/Services/, Views/Shared/_Layout.cshtml" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;fontSize=10;fontColor=#1e293b;align=left;spacingLeft=8;" vertex="1" parent="sub_presentation">
+          <mxGeometry x="15" y="32" width="430" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="p_admin" value="&lt;b&gt;Admin Controllers &amp; ViewModels&lt;/b&gt;&lt;br&gt;+ Areas/Admin/Controllers/ServicesController (CRUD, ToggleStatus)&lt;br&gt;+ ServiceFormViewModel, ServiceListAdminViewModel&lt;br&gt;+ Areas/Admin/Views/Services/ (Index, Create, Edit, Details)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;fontSize=10;fontColor=#1e293b;align=left;spacingLeft=8;" vertex="1" parent="sub_presentation">
+          <mxGeometry x="15" y="90" width="430" height="52" as="geometry" />
+        </mxCell>
+
+        <!-- Sub-box: Business & Domain Services -->
+        <mxCell id="sub_business" value="TẦNG NGHIỆP VỤ &amp; DỊCH VỤ (BUSINESS &amp; DOMAIN SERVICES)" style="swimlane;whiteSpace=wrap;html=1;startSize=24;fillColor=#fefce8;strokeColor=#ca8a04;fontStyle=1;fontSize=11;fontColor=#854d0e;rounded=1;" vertex="1" parent="layer_app_core">
+          <mxGeometry x="500" y="35" width="450" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="b_storage" value="&lt;b&gt;File &amp; Image Storage (IAvatarStorage / LocalAvatarStorage)&lt;/b&gt;&lt;br&gt;Xác thực file (.jpg, .png, .webp, &amp;le;2MB), lưu trữ Thumbnail và bộ ảnh ServiceImages" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ca8a04;fontSize=10;fontColor=#1e293b;align=left;spacingLeft=8;" vertex="1" parent="sub_business">
+          <mxGeometry x="15" y="32" width="420" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="b_account" value="&lt;b&gt;Account &amp; Security Services (AccountService, SecureTokenService)&lt;/b&gt;&lt;br&gt;Đăng ký, xác thực đăng nhập, mã hóa Password BCRYPT/PBKDF2, Reset Token" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ca8a04;fontSize=10;fontColor=#1e293b;align=left;spacingLeft=8;" vertex="1" parent="sub_business">
+          <mxGeometry x="15" y="70" width="420" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="b_menu_mail" value="&lt;b&gt;Navigation &amp; Notification (AdminMenuService, IEmailSender)&lt;/b&gt;&lt;br&gt;Phân giải menu động theo Role (Manager/Staff/Admin), Gửi email thông báo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ca8a04;fontSize=10;fontColor=#1e293b;align=left;spacingLeft=8;" vertex="1" parent="sub_business">
+          <mxGeometry x="15" y="108" width="420" height="34" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow between Presentation and Business Services -->
+        <mxCell id="arr_pres_biz" value="Service Calls" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#2563eb;strokeWidth=1.5;fontSize=10;fontStyle=1;fontColor=#1e40af;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="layer_app_core" source="sub_presentation" target="sub_business">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow 3: App Core to DAL -->
+        <mxCell id="arr_app_dal" value="Entity Framework Core LINQ Queries &amp; DbContext Commands" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#16a34a;strokeWidth=2;fontSize=11;fontStyle=1;fontColor=#15803d;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="sys_boundary" source="layer_app_core" target="layer_dal">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 4. Data Access Layer (DAL) -->
+        <mxCell id="layer_dal" value="TẦNG TRUY CẬP DỮ LIỆU (DATA ACCESS LAYER - DAL / ENTITY FRAMEWORK CORE 8.0)" style="swimlane;whiteSpace=wrap;html=1;startSize=26;fillColor=#faf5ff;strokeColor=#9333ea;fontStyle=1;fontSize=12;fontColor=#7e22ce;rounded=1;" vertex="1" parent="sys_boundary">
+          <mxGeometry x="40" y="535" width="970" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="dal_dbcontext" value="&lt;b&gt;ApplicationDbContext&lt;/b&gt;&lt;br&gt;DbSet&amp;lt;Service&amp;gt;, DbSet&amp;lt;ServiceImage&amp;gt;, DbSet&amp;lt;Setting&amp;gt;, DbSet&amp;lt;User&amp;gt;, DbSet&amp;lt;Reservation&amp;gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9333ea;fontSize=10;fontColor=#1e293b;" vertex="1" parent="layer_dal">
+          <mxGeometry x="30" y="35" width="440" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="dal_orm" value="&lt;b&gt;ORM &amp; Data Infrastructure&lt;/b&gt;&lt;br&gt;Change Tracking, LINQ to Entities, Relational Foreign Keys Mapping, DatabaseSeeder" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9333ea;fontSize=10;fontColor=#1e293b;" vertex="1" parent="layer_dal">
+          <mxGeometry x="500" y="35" width="440" height="38" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow 4: DAL to Database -->
+        <mxCell id="arr_dal_db" value="ADO.NET Provider / Microsoft.Data.SqlClient (Parameterized SQL Statements)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#9333ea;strokeWidth=2;fontSize=11;fontStyle=1;fontColor=#7e22ce;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="sys_boundary" source="layer_dal" target="db_cylinder">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 5. Database Layer (Cylinder) -->
+        <mxCell id="db_cylinder" value="&lt;b&gt;TẦNG CƠ SỞ DỮ LIỆU (DATABASE LAYER - MICROSOFT SQL SERVER)&lt;/b&gt;&lt;br&gt;Tables: [Services], [ServiceImages], [Settings], [Users], [Reservations], [Posts], [Sliders]...&lt;br&gt;&lt;i&gt;Data Integrity: Primary Keys, Foreign Keys (Cascade Delete ServiceImages), Unique Constraints &amp; Indexes&lt;/i&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f1f5f9;strokeColor=#475569;fontStyle=0;fontSize=11;fontColor=#0f172a;" vertex="1" parent="sys_boundary">
+          <mxGeometry x="160" y="650" width="730" height="90" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+

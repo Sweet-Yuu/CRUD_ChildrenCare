@@ -1,0 +1,3 @@
+@echo off
+echo Starting Children Care Web Application...
+dotnet run --project CRUD_ChildrenCare/CRUD_ChildrenCare.csproj

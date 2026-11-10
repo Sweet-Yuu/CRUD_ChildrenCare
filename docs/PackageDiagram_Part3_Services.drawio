@@ -1,0 +1,72 @@
+<mxfile host="Electron" modified="2026-10-09T13:20:00.000Z" agent="Antigravity" version="21.6.8" type="device">
+  <diagram id="package-diagram-part3" name="Package Diagram Part 3 Services">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- App Boundary -->
+        <mxCell id="boundary" value="Kiến Trúc Các Gói (Package Diagram - Part 3 Services)" style="swimlane;whiteSpace=wrap;html=1;startSize=30;horizontal=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="30" width="1080" height="740" as="geometry" />
+        </mxCell>
+
+        <!-- Presentation Layer -->
+        <mxCell id="pkg_presentation" value="Presentation Layer (Views &amp; Controllers)" style="swimlane;whiteSpace=wrap;html=1;startSize=25;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" vertex="1" parent="boundary">
+          <mxGeometry x="40" y="50" width="1000" height="230" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p_public_ctrl" value="&lt;&lt;package&gt;&gt;&#10;CRUD_ChildrenCare.Controllers&#10;--&#10;+ ServicesController (Public)" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=20;tabPosition=left;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;" vertex="1" parent="pkg_presentation">
+          <mxGeometry x="30" y="40" width="280" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p_admin_ctrl" value="&lt;&lt;package&gt;&gt;&#10;CRUD_ChildrenCare.Areas.Admin.Controllers&#10;--&#10;+ ServicesController (Admin)" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=20;tabPosition=left;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;" vertex="1" parent="pkg_presentation">
+          <mxGeometry x="350" y="40" width="310" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p_views" value="&lt;&lt;package&gt;&gt;&#10;Views &amp; Razor Templates&#10;--&#10;+ Views/Services/ (Index, Details)&#10;+ Areas/Admin/Views/Services/ (Index, Create, Edit, Details)" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=20;tabPosition=left;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;" vertex="1" parent="pkg_presentation">
+          <mxGeometry x="690" y="40" width="280" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- ViewModels Layer -->
+        <mxCell id="pkg_vm_layer" value="ViewModels Layer" style="swimlane;whiteSpace=wrap;html=1;startSize=25;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="boundary">
+          <mxGeometry x="40" y="310" width="1000" height="160" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p_public_vm" value="&lt;&lt;package&gt;&gt;&#10;CRUD_ChildrenCare.ViewModels.Services&#10;--&#10;+ ServiceListPublicViewModel&#10;+ ServiceDetailPublicViewModel" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=20;tabPosition=left;html=1;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="pkg_vm_layer">
+          <mxGeometry x="30" y="40" width="430" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p_admin_vm" value="&lt;&lt;package&gt;&gt;&#10;CRUD_ChildrenCare.Areas.Admin.ViewModels.Services&#10;--&#10;+ ServiceListAdminViewModel&#10;+ ServiceFormViewModel" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=20;tabPosition=left;html=1;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="pkg_vm_layer">
+          <mxGeometry x="510" y="40" width="460" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Infrastructure / Data / Models Layer -->
+        <mxCell id="pkg_infra_layer" value="Data &amp; Core Domain Layer" style="swimlane;whiteSpace=wrap;html=1;startSize=25;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="boundary">
+          <mxGeometry x="40" y="500" width="1000" height="210" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p_models" value="&lt;&lt;package&gt;&gt;&#10;CRUD_ChildrenCare.Models&#10;--&#10;+ Service&#10;+ ServiceImage&#10;+ ServiceStatus (Enum)&#10;+ Setting (Category)" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=20;tabPosition=left;html=1;fillColor=#ffffff;strokeColor=#9673a6;" vertex="1" parent="pkg_infra_layer">
+          <mxGeometry x="30" y="40" width="280" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p_data" value="&lt;&lt;package&gt;&gt;&#10;CRUD_ChildrenCare.Data&#10;--&#10;+ ApplicationDbContext&#10;+ DatabaseSeeder&#10;+ SystemData" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=20;tabPosition=left;html=1;fillColor=#ffffff;strokeColor=#9673a6;" vertex="1" parent="pkg_infra_layer">
+          <mxGeometry x="360" y="40" width="280" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p_files" value="&lt;&lt;package&gt;&gt;&#10;CRUD_ChildrenCare.Services.Files&#10;--&#10;+ IAvatarStorage&#10;+ LocalAvatarStorage" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=20;tabPosition=left;html=1;fillColor=#ffffff;strokeColor=#9673a6;" vertex="1" parent="pkg_infra_layer">
+          <mxGeometry x="690" y="40" width="280" height="140" as="geometry" />
+        </mxCell>
+
+        <!-- Dependencies -->
+        <mxCell id="dep1" value="&amp;lt;&amp;lt;import&amp;gt;&amp;gt;" style="endArrow=open;endSize=8;dashed=1;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="boundary" source="pkg_presentation" target="pkg_vm_layer">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="dep2" value="&amp;lt;&amp;lt;import&amp;gt;&amp;gt;" style="endArrow=open;endSize=8;dashed=1;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="boundary" source="pkg_vm_layer" target="pkg_infra_layer">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

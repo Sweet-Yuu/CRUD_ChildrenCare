@@ -1,0 +1,345 @@
+<mxfile host="Electron" modified="2026-10-21T06:30:00.000Z" agent="Antigravity" version="21.6.8" type="device">
+  <diagram id="seq-diagram-part3" name="Sequence Diagram - Create Service">
+    <mxGraphModel dx="1400" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="&lt;b&gt;UML Sequence Diagram: UC - Create New Service (Thêm mới dịch vụ - Luồng 3 Services)&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="320" y="20" width="850" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- ================= LIFELINES ================= -->
+
+        <!-- Actor: Manager -->
+        <mxCell id="actor_manager" value="Manager&#xa;(Quản lý)" style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;verticalAlign=bottom;spacingBottom=20;strokeWidth=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="80" width="60" height="980" as="geometry" />
+        </mxCell>
+
+        <!-- Boundary: ServiceCreateView -->
+        <mxCell id="ui_boundary" value="&amp;lt;&amp;lt;boundary&amp;gt;&amp;gt;&#xa;: ServiceCreateView" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;strokeWidth=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="80" width="160" height="980" as="geometry" />
+        </mxCell>
+
+        <!-- Controller: ServicesController -->
+        <mxCell id="ctrl_services" value="&amp;lt;&amp;lt;controller&amp;gt;&amp;gt;&#xa;: ServicesController" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;strokeWidth=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="80" width="160" height="980" as="geometry" />
+        </mxCell>
+
+        <!-- Service/Storage: IAvatarStorage -->
+        <mxCell id="storage_service" value="&amp;lt;&amp;lt;service&amp;gt;&amp;gt;&#xa;: IAvatarStorage" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;strokeWidth=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="780" y="80" width="150" height="980" as="geometry" />
+        </mxCell>
+
+        <!-- Entity: Service -->
+        <mxCell id="entity_service" value="&amp;lt;&amp;lt;entity&amp;gt;&amp;gt;&#xa;: Service" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;strokeWidth=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="80" width="140" height="980" as="geometry" />
+        </mxCell>
+
+        <!-- DbContext: ApplicationDbContext -->
+        <mxCell id="dbcontext" value="&amp;lt;&amp;lt;data-access&amp;gt;&amp;gt;&#xa;: ApplicationDbContext" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;strokeWidth=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1270" y="80" width="180" height="980" as="geometry" />
+        </mxCell>
+
+        <!-- ================= ACTIVATION BARS ================= -->
+        <mxCell id="act_actor" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="actor_manager">
+          <mxGeometry x="25" y="80" width="10" height="860" as="geometry" />
+        </mxCell>
+
+        <mxCell id="act_ui" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="ui_boundary">
+          <mxGeometry x="75" y="80" width="10" height="850" as="geometry" />
+        </mxCell>
+
+        <mxCell id="act_ctrl" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="ctrl_services">
+          <mxGeometry x="75" y="140" width="10" height="770" as="geometry" />
+        </mxCell>
+
+        <mxCell id="act_storage_thumb" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="storage_service">
+          <mxGeometry x="70" y="270" width="10" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="act_entity" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="entity_service">
+          <mxGeometry x="65" y="330" width="10" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="act_db1" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="dbcontext">
+          <mxGeometry x="85" y="380" width="10" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="act_storage_img" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="storage_service">
+          <mxGeometry x="70" y="500" width="10" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="act_db2" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="dbcontext">
+          <mxGeometry x="85" y="550" width="10" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- ================= MESSAGES (MAIN SEQUENCE) ================= -->
+
+        <!-- 1. Enter details -->
+        <mxCell id="msg_1" value="1: enterServiceInfo(title, briefInfo, price, quota, categoryId)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="115" y="180" as="sourcePoint" />
+            <mxPoint x="325" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 2. Select Images -->
+        <mxCell id="msg_2" value="2: selectFiles(thumbnailFile, newImageFiles)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="115" y="205" as="sourcePoint" />
+            <mxPoint x="325" y="205" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 3. Click Submit -->
+        <mxCell id="msg_3" value="3: click [Submit / Create]" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="115" y="230" as="sourcePoint" />
+            <mxPoint x="325" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 4. HTTP POST Create -->
+        <mxCell id="msg_4" value="4: HTTP POST /Admin/Services/Create(model)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="335" y="240" as="sourcePoint" />
+            <mxPoint x="585" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 5. Self-call: Check permission & Validate -->
+        <mxCell id="msg_5" value="5: checkRole(IsManagerOrAdmin)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="595" y="260" as="sourcePoint" />
+            <mxPoint x="595" y="280" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="630" y="260" />
+              <mxPoint x="630" y="280" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="msg_6" value="6: validate(model: SalePrice &lt;= ListPrice &amp;amp;&amp;amp; Thumbnail != null)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="595" y="295" as="sourcePoint" />
+            <mxPoint x="595" y="315" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="630" y="295" />
+              <mxPoint x="630" y="315" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 7. Save thumbnail -->
+        <mxCell id="msg_7" value="7: SaveAsync(model.ThumbnailFile, ct)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="595" y="350" as="sourcePoint" />
+            <mxPoint x="850" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 8. Return thumbnail url -->
+        <mxCell id="msg_8" value="8: thumbnailUrl" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="850" y="390" as="sourcePoint" />
+            <mxPoint x="595" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 9. Create Service instance -->
+        <mxCell id="msg_9" value="9: &amp;lt;&amp;lt;create&amp;gt;&amp;gt; new Service(model, thumbnailUrl)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="595" y="410" as="sourcePoint" />
+            <mxPoint x="1095" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="msg_10" value="10: service" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1095" y="440" as="sourcePoint" />
+            <mxPoint x="595" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 11. Add to DbContext and Save -->
+        <mxCell id="msg_11" value="11: Services.Add(service)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="595" y="460" as="sourcePoint" />
+            <mxPoint x="1355" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="msg_12" value="12: SaveChangesAsync()" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="595" y="485" as="sourcePoint" />
+            <mxPoint x="1355" y="485" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="msg_13" value="13: success (generated service.Id)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1355" y="520" as="sourcePoint" />
+            <mxPoint x="595" y="520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ================= LOOP: Detail Images ================= -->
+        <mxCell id="loop_frame" value="&lt;b&gt;loop&lt;/b&gt; [for each file in NewImageFiles (max 10)]" style="shape=umlFrame;whiteSpace=wrap;html=1;strokeColor=#4d4d4d;fillColor=none;width=280;height=25;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="540" y="560" width="870" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="msg_14" value="14: SaveAsync(file, ct)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="595" y="585" as="sourcePoint" />
+            <mxPoint x="850" y="585" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="msg_15" value="15: imageUrl" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="850" y="620" as="sourcePoint" />
+            <mxPoint x="595" y="620" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="msg_16" value="16: ServiceImages.Add(new ServiceImage(service.Id, imageUrl, sortOrder++))" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="595" y="640" as="sourcePoint" />
+            <mxPoint x="1355" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="msg_17" value="17: SaveChangesAsync()" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="595" y="670" as="sourcePoint" />
+            <mxPoint x="1355" y="670" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="msg_18" value="18: success" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1355" y="695" as="sourcePoint" />
+            <mxPoint x="595" y="695" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Redirect and Result -->
+        <mxCell id="msg_19" value="19: RedirectToAction(Index) [HTTP 302]" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="585" y="730" as="sourcePoint" />
+            <mxPoint x="335" y="730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="msg_20" value="20: displayServiceListWithSuccessNotification()" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="325" y="750" as="sourcePoint" />
+            <mxPoint x="115" y="750" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ================= ALT FRAME: ALTERNATIVE SEQUENCES ================= -->
+        <mxCell id="alt_frame" value="&lt;b&gt;alt&lt;/b&gt; [Alternative Sequences]" style="shape=umlFrame;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=none;width=180;height=25;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="70" y="780" width="1380" height="260" as="geometry" />
+        </mxCell>
+
+        <!-- Alt 1: Invalid Data -->
+        <mxCell id="lbl_alt1" value="[ModelState.IsValid == false (SalePrice &gt; ListPrice hoặc thiếu Thumbnail)]" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=2;fontColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="80" y="805" width="460" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="msg_alt1_1" value="a1: GetActiveCategoriesAsync()" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#b85450;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="595" y="830" as="sourcePoint" />
+            <mxPoint x="1355" y="830" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="msg_alt1_2" value="a2: categories" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;strokeColor=#b85450;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1355" y="850" as="sourcePoint" />
+            <mxPoint x="595" y="850" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="msg_alt1_3" value="a3: return View(model) [with validation errors]" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;strokeColor=#b85450;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="585" y="870" as="sourcePoint" />
+            <mxPoint x="335" y="870" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="msg_alt1_4" value="a4: displayValidationErrors(messages)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;strokeColor=#b85450;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="325" y="885" as="sourcePoint" />
+            <mxPoint x="115" y="885" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Divider line -->
+        <mxCell id="alt_divider" value="" style="line;strokeWidth=1;dashed=1;labelPosition=top;verticalLabelPosition=bottom;align=left;verticalAlign=top;spacingTop=-15;strokeColor=#b85450;" edge="1" parent="1">
+          <mxGeometry width="1380" relative="1" as="geometry">
+            <mxPoint x="70" y="910" as="sourcePoint" />
+            <mxPoint x="1450" y="910" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Alt 2: Unauthorized -->
+        <mxCell id="lbl_alt2" value="[!IsManagerOrAdmin (Không đủ quyền)]" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=2;fontColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="80" y="920" width="280" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="msg_alt2_1" value="b1: return Forbid() [HTTP 403]" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;strokeColor=#b85450;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="585" y="945" as="sourcePoint" />
+            <mxPoint x="335" y="945" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="msg_alt2_2" value="b2: displayAccessDeniedScreen()" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;strokeColor=#b85450;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="325" y="965" as="sourcePoint" />
+            <mxPoint x="115" y="965" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Divider line 2 -->
+        <mxCell id="alt_divider2" value="" style="line;strokeWidth=1;dashed=1;labelPosition=top;verticalLabelPosition=bottom;align=left;verticalAlign=top;spacingTop=-15;strokeColor=#b85450;" edge="1" parent="1">
+          <mxGeometry width="1380" relative="1" as="geometry">
+            <mxPoint x="70" y="985" as="sourcePoint" />
+            <mxPoint x="1450" y="985" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Alt 3: Storage Exception -->
+        <mxCell id="lbl_alt3" value="[AvatarStorageException (Lỗi upload file)]" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=2;fontColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="80" y="990" width="280" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="msg_alt3_1" value="c1: throw AvatarStorageException" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;strokeColor=#b85450;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="850" y="1010" as="sourcePoint" />
+            <mxPoint x="595" y="1010" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="msg_alt3_2" value="c2: return View(model) [with file error]" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;strokeColor=#b85450;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="585" y="1025" as="sourcePoint" />
+            <mxPoint x="335" y="1025" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="msg_alt3_3" value="c3: displayUploadErrorMessage()" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;strokeColor=#b85450;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="325" y="1035" as="sourcePoint" />
+            <mxPoint x="115" y="1035" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
